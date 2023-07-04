@@ -6,13 +6,13 @@ const email_config = require('../config/emailConfig');
 const transporter = createTransport(email_config);
 
 async function sendWelcomeMail(email) {
-  try{
-    let htmlContent = await ejs.renderFile('./src/views/welcomeInfo.ejs', {
+  let htmlContent;
+  try {
+    htmlContent = await ejs.renderFile('./src/views/welcomeInfo.ejs', {
       sender: 'The Solitaro Team',
       username: 'Benito'
     });
-  }
-  catch(error){
+  } catch (error) {
     console.log(error);
   }
 

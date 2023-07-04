@@ -2,45 +2,84 @@
 <html>
   <head>
     <style>
-    .welcome-body {
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
         font-family: Georgia, serif;
-        color: #333333;
-        background-color: #FFFFFF;
-        box-shadow: 3px 3px red, -1em 0 .4em olive;
-        width: 400px;
-        padding: 4px 6px;
-    }
-    h5 {
-        font-size: 16px;
-        font-weight: 600;
-    }
-    img{
+        background-color: #f8f8f8;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .logo {
         width: 100px;
         height: 100px;
-    }
-    p {
         margin-bottom: 10px;
-    }
-</style>
+      }
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333333;
+      }
+      .content {
+        margin-bottom: 20px;
+      }
+      .message {
+        margin-bottom: 10px;
+        color: #555555;
+        line-height: 1.5;
+      }
+      .sender {
+        font-weight: bold;
+        color: #333333;
+      }
+      .footer {
+        text-align: center;
+        color: #888888;
+      }
+    </style>
   </head>
   <body>
-    <div className="welcome-body">
-    <img src="../assets/logo.png" alt="logo" />
-
-    <h5> Hey there, <b><%= username %>!</b></h5>
-
-    <p></p>Welcome to Solitaro, where digital adventures
-    reach new heights! Discover captivating content, connect with awesome
-    people, and let your talents shine. Solitaro is not just another social
-    media platform; it's your vibrant community where friendships bloom,
-    curiosity runs wild, and laughter knows no bounds. Get ready to dive in,
-    explore, and flourish like a true Solitaro champ.</p> 
-    
-    <p>We can't wait to see the magic you'll bring to our fantastic community.</p> 
-
-    <h5>Welcome aboard!🎉</h5>
-
-    <p><%= sender %></p>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">Welcome to Solitaro</h1>
+      </div>
+      <div class="content">
+        <p class="message">
+          Hey there, <b><%= username %>!</b>
+        </p>
+        <p class="message">
+          Welcome to Solitaro, where digital adventures reach new heights!
+          Discover captivating content, connect with awesome people, and let
+          your talents shine. Solitaro is not just another social media
+          platform; it's your vibrant community where friendships bloom,
+          curiosity runs wild, and laughter knows no bounds. Get ready to dive
+          in, explore, and flourish like a true Solitaro champ.
+        </p>
+        <p class="message">
+          We can't wait to see the magic you'll bring to our fantastic
+          community.
+        </p>
+        <p class="message">
+          Best regards,
+          <br>
+          <span class="sender"><%= sender %></span>
+        </p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2023 Solitaro. All rights reserved.</p>
+      </div>
+    </div>
   </body>
-</div>
 </html>

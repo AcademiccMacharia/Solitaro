@@ -12,7 +12,7 @@ app.use(cors());
 
 app.use(express.json());
 app.set('view engine', 'ejs');
-
+app.use(express.static('src/assets'));
 
 app.use(session({
     secret: process.env.SECRET_KEY,
@@ -26,6 +26,7 @@ app.use(session({
         secure: true
     }
 }));
+
 
 app.get('/', (req, res) => {
     res.send('Welcome to the social app');
