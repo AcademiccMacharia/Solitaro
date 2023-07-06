@@ -1,9 +1,9 @@
-const memberRoutes = require('express').Router()
-const {registerMember, loginMember, logoutMember} = require('../controllers/memberController');
+const express = require('express');
+const memberController = require('../controllers/memberController');
+const memberRoutes = express.Router();
 
-
-memberRoutes.post('/login', loginMember)
-memberRoutes.post('/register', registerMember)
-memberRoutes.get('/logout', logoutMember)
+memberRoutes.post('/login', memberController.loginMember);
+memberRoutes.post('/register', memberController.registerMember);
+memberRoutes.get('/logout', memberController.logoutMember);
 
 module.exports = memberRoutes;
