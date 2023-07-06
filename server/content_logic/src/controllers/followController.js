@@ -1,5 +1,3 @@
-//the controller below should: get the people a specific user follows, the people who follow a specific user, get a users follower, get following count, see all who they are following with their usernames, get all their followers with their usernames
-
 module.exports = {
     getFollowersRelationshipTable: async (req, res) => {
         try {

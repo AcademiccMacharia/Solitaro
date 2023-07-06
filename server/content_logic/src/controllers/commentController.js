@@ -79,6 +79,37 @@ module.exports = {
             });
         }
     },
+    getPostCommentsCount: async (req, res) => {
+        try {
+          const pool = req.pool;
+            const { post_id } = req.params;
+          if (pool.connected) {
+            const result = await pool.request()
+              .input('post_id', post_id)
+              .execute('social.GetPostCommentsCount');
+                console.log(result)
+            const commentsCount = result.recordset[0].comments_count;
+            if (commentsCount > 0) {
+                res.json({
+                    success: true,
+                    message: "Comments count retrieved successfully",
+                    data: commentsCount
+                });
+            }
+            else {
+                res.status(404).json({
+                    success: false,
+                    message: "Comments count not found"
+                });
+            }
+          } else {
+            throw new Error('Database connection error');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          throw error;
+        }
+      },
     deleteComment: async (req, res) => {
         try {
             const { comment_id } = req.params;

@@ -7,6 +7,7 @@ const config = require('./src/config/appConfig');
 const commentRoutes = require('./src/routes/commentRoutes');
 const replyRoutes = require('./src/routes/replyRoutes');
 const followRoutes = require('./src/routes/followRoutes');
+const likeRoutes = require('./src/routes/likeRoutes');
 
 const app = express();
 app.use(cors());
@@ -32,6 +33,7 @@ async function startApp() {
         app.use('/', commentRoutes)
         app.use('/', replyRoutes)
         app.use('/', followRoutes)
+        app.use('/', likeRoutes)
 
         app.use("*", (req, res, next) => {
             const error = new Error("Route not found");
