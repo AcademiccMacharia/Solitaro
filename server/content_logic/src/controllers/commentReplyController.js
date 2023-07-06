@@ -18,15 +18,16 @@ module.exports = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
-    createCommentReply: async (req, res) => {
+    createReply: async (req, res) => {
         try {
-            let { comment_id, reply } = req.body;
+            let { user_id, comment_id, content } = req.body;
             const pool = req.pool;
             if (pool.connected) {
                 let results = await pool.request()
+                    .input("user_id", user_id)
                     .input("comment_id", comment_id)
-                    .input("reply", reply)
-                    .execute('social.CreateCommentReply');
+                    .input("content", content)
+                    .execute('social.WriteReply');
                 console.log(results);
                 res.json({
                     success: true,
@@ -54,7 +55,7 @@ module.exports = {
             if (pool.connected) {
                 let reply = await pool.request()
                     .input('reply_id', reply_id)
-                    .execute('social.GetCommentReplyByID');
+                    .execute('social.GetReplyByID');
                 console.log(reply);
                 if (reply.recordsets[0].length > 0) {
                     res.json({
