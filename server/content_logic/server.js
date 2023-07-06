@@ -6,6 +6,7 @@ const sql = require('mssql');
 const config = require('./src/config/appConfig');
 const commentRoutes = require('./src/routes/commentRoutes');
 const replyRoutes = require('./src/routes/replyRoutes');
+const followRoutes = require('./src/routes/followRoutes');
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,7 @@ async function startApp() {
         app.use('/', routes);
         app.use('/', commentRoutes)
         app.use('/', replyRoutes)
+        app.use('/', followRoutes)
 
         app.use("*", (req, res, next) => {
             const error = new Error("Route not found");
