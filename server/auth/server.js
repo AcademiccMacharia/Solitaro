@@ -21,15 +21,15 @@ app.use(express.json());
 // const redisStore = new RedisStore({url: https:localhost:6379})
 // console.log(redisStore)
 
-// const redisStore = connectRedis.(session)
-// const redisClient = redis.createClient({
-//     host: 'localhost',
-//     port: 6379
-// })
+const redisStore = connectRedis.(session)
+const redisClient = redis.createClient({
+    host: 'localhost',
+    port: 6379
+})
 
-// const redisStore = new RedisStore({
-//     client: redisClient
-// })
+const redisStore = new RedisStore({
+    client: redisClient
+})
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));

@@ -1,31 +1,27 @@
 module.exports = {
-    handleLikesAndDislikes: async (likeType, userId, entityId, action) => {
+    handleLikesAndDislikes: async (req, res) => {
         try {
-            const pool = req.pool;
-            if (pool.connected) {
-                const result = await pool.request()
-                    .input('likeType', likeType)
-                    .input('userId', userId)
-                    .input('entityId', entityId)
-                    .input('action', action)
-                    .query('SELECT social.HandleLikesAndDislikes(@likeType, @userId, @entityId, @action) AS AffectedRowCount');
+          const { likeType, userId, entityId, action } = req.body;
+          const pool = req.pool;
+      
+          if (pool.connected) {
+            const result = await pool.request()
+              .input('likeType', likeType)
+              .input('userId', userId)
+              .input('entityId', entityId)
+              .input('action', action)
+              .execute('social.HandleLikesAndDislikes');
 
-                const affectedRowCount = result.recordset[0].AffectedRowCount;
-                if (affectedRowCount > 0) {
-                    res.json({
-                        success: true,
-                        message: "updated successfully"
-                    })
-                }
-                return null;
-            } else {
-                throw new Error('Database connection error');
-            }
+            console.log(result);
+              res.json({ success: true, message: 'Action completed successfully' });
+          } else {
+            res.status(500).json({ success: false, message: 'Internal server error' });
+          }
         } catch (error) {
-            console.error('Error:', error);
-            throw error;
+          console.error('Error:', error);
+            res.status(500).json({ success: false, message: error.message });
         }
-    },
+      },      
     getCommentLikesCount: async (req, res) => {
         try {
             const { comment_id } = req.params;
@@ -120,3 +116,8 @@ module.exports = {
         }
     }
 }
+
+
+
+
+
