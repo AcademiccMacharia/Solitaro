@@ -1,0 +1,23 @@
+CREATE TABLE social.users (
+  id uniqueidentifier DEFAULT NEWID() PRIMARY KEY NOT NULL,
+  full_name VARCHAR(255) NOT NULL,
+  username VARCHAR(255) UNIQUE NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  Password VARCHAR(100) NOT NULL,
+  dob DATE NOT NULL,
+  gender TEXT NOT NULL,
+  country TEXT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  notification_count INT NOT NULL DEFAULT 0,
+  IsVerified BIT NOT NULL DEFAULT 0 
+);
+GO
+
+CREATE TABLE social.profile (
+  id uniqueidentifier DEFAULT NEWID() PRIMARY KEY REFERENCES social.users(id) ON DELETE CASCADE ON UPDATE CASCADE NOT NULL,
+  bio VARCHAR(500),
+  dp_url VARCHAR(255)
+);
+GO
+
+

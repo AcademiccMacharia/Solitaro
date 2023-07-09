@@ -44,7 +44,7 @@ module.exports = {
   },
   
 loginMember: async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.params;
   try {
     const sql = await mssql.connect(config);
     const request = sql.request();
@@ -55,7 +55,8 @@ loginMember: async (req, res) => {
       let passwordMatch = await bcrypt.compare(password, member.recordset[0].Password);
       if (passwordMatch) {
         req.session.id = member.recordset[0].id;
-        console.log(req.session)
+        req.session.authorized = true;
+        req.session.member = member;
         res.json({
           success: true,
           message: "Member logged in successfully",
@@ -79,7 +80,7 @@ loginMember: async (req, res) => {
 
 logoutMember: async (req, res) => {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (req.session.member_id && req.session.email === id) {
         req.session.member_id = null;
         req.session.destroy();
