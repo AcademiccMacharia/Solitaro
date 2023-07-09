@@ -43,48 +43,56 @@ module.exports = {
     }
   },
   
-loginMember: async (req, res) => {
-  const { email, password } = req.params;
-  try {
-    const sql = await mssql.connect(config);
-    const request = sql.request();
-    request.input('email', mssql.VarChar, email);
-    let member = await request.query('SELECT * FROM social.users WHERE email = @email');
-    console.log(member);
-    if (member.recordset.length > 0) {
-      let passwordMatch = await bcrypt.compare(password, member.recordset[0].Password);
-      if (passwordMatch) {
-        req.session.id = member.recordset[0].id;
-        req.session.authorized = true;
-        req.session.member = member;
-        res.json({
-          success: true,
-          message: "Member logged in successfully",
-          data: {
-            session_id: req.sessionID, 
-            member_id: member.recordset[0].id,
-            member_name: member.recordset[0].username
+  loginMember: async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      const sql = await mssql.connect(config);
+      const request = sql.request();
+      request.input('email', mssql.VarChar, email);
+      const result = await request.query('SELECT id, username, Password FROM social.users WHERE email = @email');
+      const member = result.recordset[0];
+
+      if (member) {
+        const passwordMatch = await bcrypt.compare(password, member.Password);
+        if (passwordMatch) {
+          req.session.member_id = member.id;
+          req.session.authorized = true;
+          req.session.member_name = member.username;
+          res.json({
+            success: true,
+            message: "Member logged in successfully",
+            data: {
+              session_id: req.sessionID,
+              member_id: member.id,
+              member_name: member.username
+            }
+          });
+        } else {
+          res.status(401).json({ message: "Invalid email or password" });
+        }
+      } else {
+        res.status(404).json({ message: "You are not registered!" });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  },
+
+  logoutMember: async (req, res) => {
+    try {
+      if (req.session.member_id && req.session.member_id === req.params.id) {
+        req.session.member_id = null;
+        req.session.authorized = false;
+        req.session.member_name = null;
+        req.session.destroy((err) => {
+          if (err) {
+            console.error("Error destroying session:", err);
+            res.status(500).json({ error: "Internal server error" });
+          } else {
+            res.json({ success: true, message: "Logged out successfully" });
           }
         });
-      } else {
-        res.status(401).json({ message: "Invalid email or password" });
-      }
-    } else {
-      res.status(404).json({ message: "You are not registered!" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-},
-
-logoutMember: async (req, res) => {
-    try {
-      const { id } = req.params;
-      if (req.session.member_id && req.session.email === id) {
-        req.session.member_id = null;
-        req.session.destroy();
-        res.json({ success: true, message: "Logged out successfully" });
       } else {
         res.json({ success: false, message: "User is not logged in" });
       }
@@ -93,5 +101,4 @@ logoutMember: async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   }
-  
 };
