@@ -3,6 +3,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
+    font-family: 'Quicksand', sans-serif;
   }
   .landing-navbar{
     display: flex;
