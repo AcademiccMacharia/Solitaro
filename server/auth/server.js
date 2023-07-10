@@ -69,7 +69,6 @@ async function connectToDatabase() {
       }
       },
       (req, res) => {
-          
           res.send("Ok")
       }
   );
@@ -79,8 +78,9 @@ async function connectToDatabase() {
   app.get('/logs', (req, res) => {
     console.log(req.session);
     const authorized = req.session?.authorized;
+  
     if (authorized) {
-      res.send("Ok! You are logged in");
+      res.send(`Welcome! You are logged in`);
     } else {
       res.status(401).json({
         success: false,
@@ -88,10 +88,9 @@ async function connectToDatabase() {
       });
     }
   });
-  
 
-app.get("/login/:email/:password", (req, res)=>{
-    const { email, password} = req.params;
+app.get("/login", (req, res)=>{
+    const { email, password} = req.body;
 
 
     if (email && password) {
@@ -131,80 +130,3 @@ app.get("/login/:email/:password", (req, res)=>{
 }
 
 connectToDatabase();
-
-
-
-
-
-
-
-
-
-
-
-// const redisStore = connectRedis.(session)
-// const redisClient = redis.createClient({
-//     host: 'localhost',
-//     port: 6379
-// })
-
-// const redisStore = new RedisStore({
-//     client: redisClient
-// })
-
-// app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'src', 'views'));
-// app.use(express.static('src/assets'));
-
-// async function StartApp(){
-//     try {
-//       let pool = await mssql.connect(config);
-//       console.log(' App Connected to database');
-// app.use((req, res, next)=> {req.pool = pool; next()})
-//       app.use(session({
-//         // store: new RedisStore(),
-//         secret: process.env.SECRET_KEY,
-//         saveUninitialized: true,
-//         genid: () => v4(),
-//         resave: false,
-//         rolling: true,
-//         cookie: {
-//             maxAge: 1000 * 60 * 60 * 24 * 7,
-//             httpOnly: true,
-//             secure: true
-//         }
-//     }));
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-
-
-// app.get('/', (req, res) => {
-//     res.send('Welcome to the social app');
-// });
-
-// app.use('/', memberRoutes);
-// app.get('/login', (req, res) => {
-//     res.render('login');
-// });
-
-// app.get('/logged-in/:member_id', (req, res) => {
-//     const { member_id } = req.params;
-//     if (req.session.member_id && req.session.member_id === member_id) {
-//       req.session.authorized = true;
-//       res.send('Logged in successfully');
-//     } else {
-//       res.redirect('/login');
-//     }
-//   });
-
-
-//   StartApp();
-
-// const PORT = process.env.PORT || 5000;
-
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-// module.exports = {app};

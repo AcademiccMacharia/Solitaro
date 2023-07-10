@@ -20,7 +20,8 @@ module.exports = {
     },
     createReply: async (req, res) => {
         try {
-            let { user_id, comment_id, content } = req.body;
+            const user_id = req.session?.member_id;
+            let { comment_id, content } = req.body;
             const pool = req.pool;
             if (pool.connected) {
                 let results = await pool.request()

@@ -19,43 +19,57 @@ app.get('/', (req, res) => {
 
 const pool = new sql.ConnectionPool(config);
 
-async function startApp() {
+async function startApp(){
     try {
-        await pool.connect();
-        console.log("App connected to the database");
+        
+      const pool = await sql.connect(config)
+    console.log("Connected to the database")
 
-        app.use((req, res, next) => {
-            req.pool = pool;
-            next();
+    app.use((req, res, next) => {req.pool = pool; next()})
+      
+    app.get(
+        "/",
+        (req, res, next) => {
+          const cont = true;
+          console.log(req);
+          if (cont) {
+            console.log("Hello from the middleware");
+          } else {
+            res.send("Error logged from middleware");
+          }
+        }
+      );
+    
+
+    app.use('/', followRoutes)
+    app.use('/', likeRoutes)
+    app.use('/', commentRoutes)
+    app.use('/', replyRoutes)
+    app.use('/', routes)
+
+    app.use("*", (req, res, next) => {
+        const error = new Error("Route Not found");
+        next({
+          status: 404,
+          message: error.message,
         });
-
-        app.use('/', routes);
-        app.use('/', commentRoutes)
-        app.use('/', replyRoutes)
-        app.use('/', followRoutes)
-        app.use('/', likeRoutes)
-
-        app.use("*", (req, res, next) => {
-            const error = new Error("Route not found");
-            next({
-                status: 404,
-                message: error.message
-            });
-        });
-
-        app.use((error, req, res, next) => {
-            res.status(error.status).json(error.message);
-        });
-
-        const port = process.env.PORT || 6000;
-        app.listen(port, () => console.log(`Server on port: ${port}`));
+      });
+      
+      app.use((error, req, res, next) => {
+        res.status(error.status).json(error.message);
+      });
+      
+      const port = process.env.PORT;
+      
+      app.listen(port, () => console.log(`Server on port: ${port}`));
+    
     } catch (error) {
-        console.log("Error connecting to the database");
-        console.log(error);
+      console.log(error)
+      
     }
 }
 
-startApp();
+startApp()
 
 
 

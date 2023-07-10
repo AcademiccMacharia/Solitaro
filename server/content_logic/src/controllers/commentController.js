@@ -50,7 +50,8 @@ module.exports = {
     },
     createComment: async (req, res) => {
         try {
-            let { user_id, post_id, content } = req.body;
+            const user_id = req.session?.member_id;
+            let { post_id, content } = req.body;
             const pool = req.pool;
 
             if (pool.connected) {

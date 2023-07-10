@@ -1,14 +1,16 @@
+const { TYPES } = require('mssql');
 module.exports = {
     handleLikesAndDislikes: async (req, res) => {
         try {
-          const { likeType, userId, entityId, action } = req.body;
+        const userId = req.session?.member_id;
+          const { likeType, entityId, action } = req.body;
           const pool = req.pool;
       
           if (pool.connected) {
             const result = await pool.request()
               .input('likeType', likeType)
-              .input('userId', userId)
-              .input('entityId', entityId)
+              .input('userId', TYPES.UniqueIdentifier, userId)
+              .input('entityId', TYPES.UniqueIdentifier, entityId)
               .input('action', action)
               .execute('social.HandleLikesAndDislikes');
 

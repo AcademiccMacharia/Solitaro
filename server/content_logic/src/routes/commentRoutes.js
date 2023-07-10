@@ -2,6 +2,10 @@ const commentRoutes = require('express').Router()
 
 const {getComments, createComment, deleteComment, getCommentById, getPostCommentsCount} = require('../controllers/commentController');
 
+const {sessionAuthorization} = require("../middlewares/sessionAuthorization");
+
+commentRoutes.use(sessionAuthorization);
+
 commentRoutes.get('/comments', getComments);
 commentRoutes.get('/comments/:id', getCommentById);
 commentRoutes.post('/comments', createComment);

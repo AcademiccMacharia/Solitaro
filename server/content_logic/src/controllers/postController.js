@@ -2,7 +2,7 @@ module.exports = {
     getPosts: async (req, res) => {
         try {
             const pool = req.pool;
-
+            
             if (pool.connected) {
                 const request = pool.request();
                 const result = await request.query('SELECT * FROM social.posts');
@@ -20,9 +20,42 @@ module.exports = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
+    //get a single user all posts
+    getUserPosts: async (req, res) => {
+        try {
+            const pool = req.pool;
+            const user_id = req.session?.member_id
+
+            if (pool.connected) {
+                const request = pool.request() 
+                .input("userId", user_id)
+                const result = await request.query('SELECT * FROM social.posts WHERE user_id = @userId');
+                //put a condition to check if they have posts otherwise say no posts found
+                if (result.recordset.length > 0) {
+                    res.json({
+                        success: true,
+                        message: "Posts retrieved successfully",
+                        data: result.recordset
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        success: false,
+                        message: "Posts not found"
+                    });
+                }
+            } else {
+                res.status(500).json({ message: "Internal server error" });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    },
     createNewPost: async (req, res) => {
         try {
-            let { user_id, content, image_url, video_url } = req.body;
+            const user_id = req.session?.member_id;
+            let { content, image_url, video_url } = req.body;
             // let { value } = newPostValidator(post)
             const pool = req.pool;
             if (pool.connected) {

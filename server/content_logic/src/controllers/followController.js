@@ -20,7 +20,8 @@ module.exports = {
     },
     
     followUser: async (req, res) => {
-        let {followed_user_id, following_user_id} = req.body;
+        const following_user_id = req.session?.member_id;
+        let {followed_user_id} = req.body;
         try {
             const pool = req.pool;
             if (pool.connected) {
@@ -47,7 +48,8 @@ module.exports = {
     },
     
     unfollowUser: async (req, res) => {
-        let {following_user_id, followed_user_id} = req.body
+        const following_user_id = req.session?.member_id;
+        let {followed_user_id} = req.body
         try {
             const pool = req.pool;
             if (pool.connected) {
