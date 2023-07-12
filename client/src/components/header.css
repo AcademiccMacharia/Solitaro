@@ -1,0 +1,73 @@
+.nav-container{
+    background-color: var(--background);
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+.navbar-home {
+    color: var(--text);
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid gold;
+  }
+  .navbar-left .logo {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+  }
+  .navbar-left .logo h1 {
+    margin-left: 10px;
+  }
+  .navbar-left .logo img {
+    width: 50px;
+    height: 50px;
+  }
+  .navbar-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 20px;
+    width: 600px;
+  }
+  .navbar-center h3 {
+    font-size: 20px;
+  }
+  .navbar-center .search-bar input {
+    width: 300px;
+    height: 30px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #e9d5d5;
+    padding-left: 10px;
+    position: relative;
+    outline: none;
+  }
+  .navbar-center .search-bar i {
+    position: absolute;
+    margin-top: 10px;
+    right: 600px;
+    color: #302e2e;
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 20px;
+    width: 200px;
+  }
+  .navbar-right .nav-icon i {
+    margin-left: 20px;
+    font-size: 20px;
+  }
+  .profile-image img,
+  .profile-container img {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 50%;
+    background-color: #e9d5d5;
+    cursor: pointer;
+  }

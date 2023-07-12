@@ -17,10 +17,14 @@ const new_Member_Schema=joi.object({
             .required(),
     country: joi.string()
             .required(),
-  Password: joi.string()
+  password: joi.string()
             .required()
-            .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$')),
- confirm_password:joi.ref('Password')            
-}).with('password','confirm_password')
+            .pattern(new RegExp('^[a-zA-Z0-9]{6,30}$'))
+                .min(6)
+                .max(30)
+                .required()
+})
+//  confirm_password:joi.ref('Password')            
+// }).with('password','confirm_password')
 
 module.exports={new_Member_Schema}

@@ -1,0 +1,119 @@
+.signup-right{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.signup-header{
+    height: 100px;
+    width: 100%;
+    padding-bottom: 100px;
+}
+.signup-header h1{
+    font-size: 40px;
+    font-family: 'Caveat', cursive;
+    color: #5A3311;
+    text-align: center;
+}
+.signup-header p {
+    font-size: 16px;
+    font-family: 'Quicksand', sans-serif;
+    color: #5A3311;
+    text-align: center;
+}
+.signup-form{
+    width: 100%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: -150px;
+}
+.signup-form form{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+    .signup-form form label{
+        font-size: 16px;
+        font-family: 'Quicksand', sans-serif;
+        color: #5A3311;
+        text-align: center;
+    }
+    .signup-form form input{
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-bottom: 1px solid #5A3311;
+        outline: none;
+        font-size: 16px;
+        font-family: 'Quicksand', sans-serif;
+    }
+    .signup-form form select {
+        width: 100%;
+        height: 50px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        font-family: 'Quicksand', sans-serif;
+    }
+    .input-group{
+        margin-bottom: 20px;
+    }
+    .form-left{
+        width: 80%;
+        margin-left: 20px;
+    }
+    .form-right{
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-evenly;
+        width: 80%;
+    }
+
+    .password-input-wrapper {
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+      
+      .password-input-wrapper input {
+        padding-right: 30px;
+      }
+      .password-input-wrapper i {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+
+      .input-group button{
+        width: 40px;
+        height: 50px;
+        border: none;
+        border-radius: 12px;
+        background-color: #5a3311;
+        color: white;
+        font-size: 16px;
+        font-family: "Quicksand", sans-serif;
+        cursor: pointer;
+        outline: none;
+        transition: 0.5s ease all;
+    }
+    .input-group button:hover{
+        transform: scale(1.1);
+        transition: 0.2s ease all;
+    }
+    #submit-btn{
+        margin-left: 400px;
+        margin-bottom: 40px;
+    }
+    .right-bottom{
+        margin-top: 40px;
+    }

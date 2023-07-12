@@ -1,6 +1,7 @@
 import React from 'react';
 import './landing.css';
 import landingLogo from '../../assets/homeLogo-dark.png';
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
     return (
@@ -17,8 +18,8 @@ const LandingPage = () => {
                     </ul>
                 </div>
                 <div className='nav-buttons'>
-                <button class="custom-btn btn-5"><span>Sign Up</span></button>
-                <button class="custom-btn btn-5"><span>Sign In</span></button>
+                <Link to='/signup'><button class="custom-btn btn-5"><span>Sign Up</span></button></Link>
+                <Link to='/login'><button class="custom-btn btn-5"><span>Sign In</span></button></Link>
                 </div>
             </div>
             <div className='landing-page-content'>

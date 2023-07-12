@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import './auth.css';
+import './login.css';
 import landingLogo from '../../assets/login-logo.png';
 import connect from '../../assets/connecting.svg';
 import interact from '../../assets/conversations.svg';
 import loving from '../../assets/selfie.png';
 import { FaArrowRight, FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -70,7 +70,7 @@ const handleDotClick = (index) => {
         const sessionResponse = await response.json();
         console.log(sessionResponse)
         if (sessionResponse.success = true) {
-          setMessage('Logged in successfully!');
+          navigate('/home');
         } else {
           setMessage('Login failed. Please try again.');
         }

@@ -11,7 +11,7 @@ module.exports = {
     try {
         const {pool} = req;
       let member = req.body;
-      let hashedpwd = await bcrypt.hash(member.Password, 8);
+      let hashedpwd = await bcrypt.hash(member.password, 8);
       let { value } = newMemberValidator(member);
       if (pool && pool.connected) {
         let results = await pool.request()
