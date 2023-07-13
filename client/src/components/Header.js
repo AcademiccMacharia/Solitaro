@@ -4,8 +4,8 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 import landingLogo from '../assets/homeLogo-dark.png';
 import man1 from "../assets/man1.jpg";
 import './header.css';
-import './homepage/homepage.css'
 import { Outlet } from 'react-router-dom';
+import DarkMode from './DarkMode';
 
 
 const Header = () => {
@@ -32,9 +32,10 @@ const Header = () => {
           <div className='nav-icon'>
             <i><IoMdNotificationsOutline /></i>
           </div>
-          <div className='profile-image'>
+          <div className='nav-image'>
             <img src={man1} alt='man' />
           </div>
+          <DarkMode />
         </div>
       </div>
       <Outlet />

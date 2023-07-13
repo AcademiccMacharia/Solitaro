@@ -10,7 +10,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid gold;
+    border-bottom: 0.1px solid var(--strip);
   }
   .navbar-left .logo {
     display: flex;
@@ -39,31 +39,32 @@
     height: 30px;
     font-size: 14px;
     border-radius: 5px;
-    border: 1px solid #e9d5d5;
+    background-color: var(--container);
+    color: var(--text);
     padding-left: 10px;
     position: relative;
+    border: none;
     outline: none;
   }
   .navbar-center .search-bar i {
     position: absolute;
     margin-top: 10px;
-    right: 600px;
-    color: #302e2e;
+    right: 650px;
+    color: var(--text);
   }
   
   .navbar-right {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-right: 20px;
-    width: 200px;
+    width: 300px;
   }
   .navbar-right .nav-icon i {
-    margin-left: 20px;
+    margin-left: 10px;
     font-size: 20px;
   }
-  .profile-image img,
-  .profile-container img {
+  .nav-image img {
     width: 40px;
     height: 40px;
     font-size: 20px;

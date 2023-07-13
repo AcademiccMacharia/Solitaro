@@ -47,7 +47,7 @@ async function connectToDatabase() {
       genid: ()=> v4(),
       cookie:{
           maxAge: oneDay,
-          httpOnly: false,
+          httpOnly: true,
           secure: false,
           domain: "localhost"
       }

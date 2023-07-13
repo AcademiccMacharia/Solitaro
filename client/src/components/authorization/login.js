@@ -61,10 +61,13 @@ const handleDotClick = (index) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
+          
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
+        credentials: "same-origin"
       });
       console.log(response)
+
 
       if (response.ok) {
         const sessionResponse = await response.json();
