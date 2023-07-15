@@ -13,27 +13,63 @@
   justify-content: center;
   height: 10%;
   width: 80%;
-  margin-bottom: 20px;
   border-bottom: 0.5px solid #f0dede;
+}
+.setting-body{
+    display: flex;
+    height: 100%;
+    width: 80%;
+    margin-left: 170px;
 }
 .settings-list {
   display: flex;
   flex-direction: column;
   height: 90%;
-  width: 20%;
-  margin-left: 170px;
+  width: 30%;
+  border-right: 1px solid #f0dede;
 }
+
 .setting {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   height: 10%;
   width: 100%;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 .setting h3:hover {
   cursor: pointer;
 }
 .setting p {
   font-size: 12px;
+}
+
+/* logout styles */
+.logout{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 10%;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+.logout h1{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.logout p{
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+.logout button{
+    font-size: 14px;
+    color: var(--text);
+    background-color: var(--container);
+}
+.logout button:hover{
+    cursor: pointer;
+    color: red;
+    background-color: var(--accent);
 }

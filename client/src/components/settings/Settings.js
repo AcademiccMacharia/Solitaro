@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import './settings.css';
 
 const Settings = () => {
@@ -7,6 +8,7 @@ const Settings = () => {
             <div className='settings-header'>
             <h1>Settings</h1>
             </div>
+            <div className='setting-body'>
             <div className='settings-list'>
                 <div className='setting'>
                     <h3>Account</h3>
@@ -21,13 +23,15 @@ const Settings = () => {
                     <p>Verify your account</p>
                 </div>
                 <div className='setting'>
-                    <h3>Logout</h3>
+                    <Link className='link' to='/settings/logout'><h3>Logout</h3></Link>
                     <p>Logout of your account</p>
                 </div>
                 <div className='setting'>
                     <h3>Delete Account</h3>
                     <p>Delete your account</p>
                 </div>
+            </div>
+            <Outlet />
             </div>
         </div>
     )

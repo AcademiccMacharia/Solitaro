@@ -9,6 +9,7 @@ import Profile from './components/profile/Profile';
 import Settings from './components/settings/Settings';
 import ProfilePosts from './components/profile/ProfilePosts';
 import ProfilePhotos from './components/profile/ProfilePhotos';
+import Logout from './components/settings/Logout';
 
 
 const router = createBrowserRouter([
@@ -17,8 +18,8 @@ const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-  path: '/login',
-  element: <Login />
+    path: '/login',
+    element: <Login />
   },
   {
     path: '/signup',
@@ -34,21 +35,27 @@ const router = createBrowserRouter([
       },
       {
         path: '/settings',
-        element: <Settings />
+        element: <Settings />,
+        children: [
+          {
+            path: '/settings/logout',
+            element: <Logout />
+          },
+        ]
       },
       {
         path: '/profile',
         element: <Profile />,
         children: [
           {
-          path: '/profile',
-          element: <ProfilePosts />
-        },
-        {
-          path: '/profile/photos',
-          element: <ProfilePhotos />
-        }
-      ]
+            path: '/profile',
+            element: <ProfilePosts />
+          },
+          {
+            path: '/profile/photos',
+            element: <ProfilePhotos />
+          }
+        ]
       },
     ]
   },
