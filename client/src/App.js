@@ -5,6 +5,10 @@ import LandingPage from './components/landing-page/landing';
 import Homepage from './components/homepage/Homepage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Header from './components/Header';
+import Profile from './components/profile/Profile';
+import Settings from './components/settings/Settings';
+import ProfilePosts from './components/profile/ProfilePosts';
+import ProfilePhotos from './components/profile/ProfilePhotos';
 
 
 const router = createBrowserRouter([
@@ -29,11 +33,25 @@ const router = createBrowserRouter([
         element: <Homepage />
       },
       {
+        path: '/settings',
+        element: <Settings />
+      },
+      {
         path: '/profile',
-        element: <h1>Profile</h1>
+        element: <Profile />,
+        children: [
+          {
+          path: '/profile',
+          element: <ProfilePosts />
+        },
+        {
+          path: '/profile/photos',
+          element: <ProfilePhotos />
+        }
+      ]
       },
     ]
-  }
+  },
 ])
 
 

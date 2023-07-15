@@ -1,0 +1,39 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: var(--background);
+  color: var(--text);
+}
+.settings-header {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  height: 10%;
+  width: 80%;
+  margin-bottom: 20px;
+  border-bottom: 0.5px solid #f0dede;
+}
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+  width: 20%;
+  margin-left: 170px;
+}
+.setting {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 10%;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.setting h3:hover {
+  cursor: pointer;
+}
+.setting p {
+  font-size: 12px;
+}

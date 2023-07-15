@@ -20,7 +20,7 @@ module.exports = {
     },
     getNotificationDescriptions: async (req, res) => {
         try {
-            const { userId } = req.params;
+            const userId = req.session?.member_id;
             const pool = req.pool;
 
             if (pool.connected) {

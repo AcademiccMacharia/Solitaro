@@ -1,0 +1,98 @@
+.profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin: auto 300px;
+    margin-left: 350px;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 60%;
+    height: 80%;
+    background-color: inherit;
+    color: var(--text);
+    overflow-y: scroll;
+}
+.profile::-webkit-scrollbar{
+    width: 0.1em;
+    background-color: transparent;
+}
+.profile::-webkit-scrollbar-thumb{
+    background-color: transparent;
+}
+.profile-body-top h1{
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 40px;
+    letter-spacing:.2em;
+    color: var(--text);
+    margin-bottom: 10px;
+}
+.profile-info{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+.profile-bio{
+    width: 50%;
+    margin-left: 60px;
+    text-align: justify;
+    margin-bottom: 20px;
+}
+.profile-body-top .profile-stats{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.profile-body-top .profile-stat p{
+    text-align: center;
+}
+.profile-body-bottom .profile-nav{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.profile-body-bottom .profile-nav ul{
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    border-bottom: 1px solid var(--text);
+}
+.profile-body-bottom .profile-nav ul li{
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+.profile-body-bottom .profile-nav ul li:hover{
+    color: var(--accent);
+    cursor: pointer;
+}
+.profile-body-bottom .profile-nav ul li span{
+    margin-right: 5px;
+}
+.profile-post{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-content: center;
+    place-self: center;
+    place-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    margin-left: 30px;
+    width: 90%;
+    height: 100%;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.profile-post img{
+    width: 250px;
+    height: 350px;
+    border-radius: 8px;
+} 

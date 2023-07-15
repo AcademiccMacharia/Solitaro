@@ -7,6 +7,7 @@ import loving from '../../assets/selfie.png';
 import { FaArrowRight, FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -53,40 +54,46 @@ const handleDotClick = (index) => {
     setAutoplayActive(true)
 };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-          
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: "same-origin"
-      });
-      console.log(response)
 
 
-      if (response.ok) {
-        const sessionResponse = await response.json();
-        console.log(sessionResponse)
-        if (sessionResponse.success = true) {
-          navigate('/home');
-        } else {
-          setMessage('Login failed. Please try again.');
-        }
-      } else {
-        const errorData = await response.json();
-        setMessage('Login failed. Please try again.');
-        console.log('Login error:', errorData.message);
+const handleLogin = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post('http://localhost:5000/login', {
+      email,
+      password
+    }, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json'
       }
-    } catch (error) {
-      console.error('Login error:', error);
+    });
+
+    console.log(response);
+
+    if (response.status === 200) {
+      const sessionResponse = response.data;
+      console.log(sessionResponse);
+
+      if (sessionResponse.success === true) {
+        navigate('/home');
+      } else {
+        setMessage('Login failed. Please try again.');
+      }
+    } else {
+      const errorData = response.data;
       setMessage('Login failed. Please try again.');
+      console.log('Login error:', errorData.message);
     }
-  };
+  } catch (error) {
+    console.error('Login error:', error);
+    setMessage('Login failed. Please try again.');
+  }
+};
+
+
+ 
 
   return (
     <div className='login-page'>

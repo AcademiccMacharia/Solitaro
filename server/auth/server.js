@@ -13,7 +13,11 @@ const { v4: uuidv4 } = require('uuid');
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
 
 app.use(express.json());
 
@@ -40,7 +44,7 @@ async function connectToDatabase() {
   app.use(session({
       store: redisStore,
       secret: sessionSecret,
-      resave: true,
+      resave: false,
       saveUninitialized: false,
       rolling: true,
       unset: "destroy",

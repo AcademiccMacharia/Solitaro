@@ -18,6 +18,7 @@ import woman1 from '../../assets/woman1.jpg';
 import woman4 from '../../assets/woman3.jpg';
 import wrestling from '../../assets/wrestling.jpg';
 import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 // import { FaArrowDown } from 'react-icons/fa';
 
 const Homepage = () => {
@@ -90,38 +91,38 @@ const Homepage = () => {
               className={activeLink === 'Home' ? 'active' : ''}
               onClick={() => handleLinkClick('Home')}
             >
-              <CiHome size={20} color={activeLink === 'Home' ? 'gold' : 'lightgray'} /> <span>Home</span>
+              <CiHome size={20} color={activeLink === 'Home' ? 'gold' : 'black'} /> <span>Home</span>
             </li>
             <li
               className={activeLink === 'Messages' ? 'active' : ''}
               onClick={() => handleLinkClick('Messages')}
             >
-              <PiMessengerLogoThin size={20} color={activeLink === 'Messages' ? 'gold' : 'lightgray'} /> <span>Messages</span>
+              <PiMessengerLogoThin size={20} color={activeLink === 'Messages' ? 'gold' : 'black'} /> <span>Messages</span>
             </li>
             <li
               className={activeLink === 'Go Live' ? 'active' : ''}
               onClick={() => handleLinkClick('Go Live')}
             >
-              <CgLivePhoto size={20} color={activeLink === 'Go Live' ? 'gold' : 'lightgray'} /> <span>Go Live</span>
+              <CgLivePhoto size={20} color={activeLink === 'Go Live' ? 'gold' : 'black'} /> <span>Go Live</span>
             </li>
             <li
               className={activeLink === 'Notifications' ? 'active' : ''}
               onClick={() => handleLinkClick('Notifications')}
             >
-              <IoMdNotificationsOutline size={20} color={activeLink === 'Notifications' ? 'gold' : 'lightgray'} /> <span>Notifications</span>
+              <IoMdNotificationsOutline size={20} color={activeLink === 'Notifications' ? 'gold' : 'black'} /> <span>Notifications</span>
             </li>
-            <li
+            <Link className="link" to='/profile'><li
               className={activeLink === 'Profile' ? 'active' : ''}
               onClick={() => handleLinkClick('Profile')}
             >
-              <CiUser size={20} color={activeLink === 'Profile' ? 'gold' : 'lightgray'} /> <span>Profile</span>
-            </li>
-            <li
+              <CiUser size={20} color={activeLink === 'Profile' ? 'gold' : 'black'} /> <span>Profile</span>
+            </li></Link>
+            <Link className="link" to='/settings'><li
               className={activeLink === 'Settings' ? 'active' : ''}
               onClick={() => handleLinkClick('Settings')}
             >
-              <CiSettings size={20} color={activeLink === 'Settings' ? 'gold' : 'lightgray'} /> <span>Settings</span>
-            </li>
+              <CiSettings size={20} color={activeLink === 'Settings' ? 'gold' : 'black'} /> <span>Settings</span>
+            </li></Link>
           </ul>
         </div>
         <div className='community-container'>

@@ -87,3 +87,7 @@ button{
 .light_change_input:checked + .light_change_label svg.sun {
   fill: #7e7e7e;
 }
+.link{
+  text-decoration: none;
+  color: var(--text);
+}
