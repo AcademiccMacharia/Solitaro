@@ -5,6 +5,7 @@
   width: 100%;
   background-color: var(--background);
   color: var(--text);
+  font-family: 'Quicksand', sans-serif;
 }
 .settings-header {
   display: flex;
@@ -13,6 +14,8 @@
   justify-content: center;
   height: 10%;
   width: 80%;
+  padding-bottom: 40px;
+  padding-top: 40px;
   border-bottom: 0.5px solid #f0dede;
 }
 .setting-body{
@@ -26,7 +29,6 @@
   flex-direction: column;
   height: 90%;
   width: 30%;
-  border-right: 1px solid #f0dede;
 }
 
 .setting {
@@ -66,10 +68,331 @@
 .logout button{
     font-size: 14px;
     color: var(--text);
-    background-color: var(--container);
 }
 .logout button:hover{
     cursor: pointer;
-    color: red;
-    background-color: var(--accent);
+}
+
+/* edit profile styles */
+
+.edit-profile{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90%;
+    width: 100%;
+    padding: 20px;
+    overflow-y: scroll;
+}
+.edit-profile p{
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.edit-profile::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    border-radius: 12px;
+  }
+  
+.edit-profile:-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+.edit-profile::-webkit-scrollbar-thumb {
+    background-color: #cfbfbf;
+    border-radius: 12px;
+  }
+  
+
+.edit-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+.edit-header-left{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.edit-header img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+.edit-header h3{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.edit-body img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.edit-field{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+.edit-field h3{
+    font-size: 18px;
+    font-weight: 600;
+    width: 180px;
+    margin-right: 20px;
+}
+.bio-field{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+.bio-field h3{
+    font-size: 18px;
+    font-weight: 600;
+    width: 180px;
+    margin-right: 20px;
+}
+.edit-field input{
+    width: 50%;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.edit-field .edit-field-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.edit-field-input{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.edit-profile button{
+    font-size: 14px;
+    color: var(--text);
+}
+.edit-profile button:hover{
+    cursor: pointer;
+}
+
+.edit-field {
+    width: 100%;
+  }
+  
+  h3 {
+    margin-bottom: 10px;
+  }
+  
+  .quill-editor {
+    height: 300px;
+    width: 800px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 200px;
+  }
+  
+  .ql-toolbar {
+    background-color: #f8f8f8;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+  }
+  
+  .ql-toolbar .ql-stroke {
+    fill: #444;
+  }
+  
+  .ql-toolbar .ql-fill,
+  .ql-toolbar .ql-picker-label,
+  .ql-toolbar .ql-picker-item {
+    color: #444;
+  }
+  
+  .ql-toolbar .ql-picker-label:hover,
+  .ql-toolbar .ql-picker-item:hover,
+  .ql-toolbar .ql-picker-label.ql-active,
+  .ql-toolbar .ql-picker-item.ql-active {
+    color: #000;
+  }
+  
+  .ql-toolbar .ql-picker-label::before,
+  .ql-toolbar .ql-picker-item::before {
+    color: #444;
+  }
+  
+  .ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+    color: #000;
+  }
+  
+  .ql-toolbar .ql-picker.ql-expanded .ql-picker-item {
+    color: #444;
+  }
+  
+  .ql-toolbar .ql-picker.ql-expanded .ql-picker-item.ql-selected {
+    color: #000;
+  }
+  
+  .ql-toolbar .ql-picker.ql-expanded .ql-picker-item:hover {
+    color: #000;
+  }
+  
+  .ql-toolbar .ql-picker.ql-expanded .ql-picker-label:hover,
+  .ql-toolbar .ql-picker.ql-expanded .ql-picker-item:hover {
+    color: #000;
+  }
+  
+
+/* account styles */
+
+.account{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90%;
+    width: 100%;
+    padding: 20px;
+}
+.account p{
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.account-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+.account-form .account-fields{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.account-form .account-fields label{
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+.account-form .account-fields input{
+    width: 50%;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: var(--text);
+    background-color: var(--container);
+    outline: none;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.account button{
+    font-size: 14px;
+    color: var(--text);
+    padding: 8px 12px;
+    width: 25%;
+    background-color: var(--container);
+    border-radius: 8px;
+}
+.account button:hover{
+    cursor: pointer;
+
+}
+
+/* verification styles */
+.verify{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 90%;
+    width: 100%;
+    padding: 20px;
+}
+.verify h1{
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.verify p{
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.verify-btn{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.verify-btn button{
+    font-size: 14px;
+    color: var(--text);
+    padding: 8px 12px;
+    width: 25%;
+    background-color: var(--container);
+    border-radius: 8px;
+}
+.verify-btn button:hover{
+    cursor: pointer;
+}
+
+/* delete account styles */
+
+.delete-acc{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 90%;
+    width: 100%;
+    padding: 20px;
+}
+.delete-acc h1{
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.delete-acc p{
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.delete-acc-fields{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.delete-acc-fields button{
+    font-size: 14px;
+    color: var(--text);
+    padding: 8px 12px;
+    width: 25%;
+    background-color: var(--container);
+    border-radius: 8px;
+}
+.delete-acc-fields button:hover{
+    cursor: pointer;
 }

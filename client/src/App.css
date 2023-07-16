@@ -10,6 +10,7 @@
   --container: #fbf1fc;
   --text: #000000;
   --accent: #f1f121;
+  --btncolor: #ffffff;
   --strip: #f1f121;
 }
 [dark-theme="dark"] {
@@ -17,6 +18,7 @@
   --container: #282828;
   --text: #ffffff;
   --accent: #f1f121;
+  --btncolor: #ffffff;
   --strip: transparent;
 }
 .dark_mode {
@@ -65,7 +67,6 @@
   width: 30px;
 }
 button{
-  background: inherit;
   border: none;
 }
 .light_change_label svg {

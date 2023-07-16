@@ -10,6 +10,10 @@ import Settings from './components/settings/Settings';
 import ProfilePosts from './components/profile/ProfilePosts';
 import ProfilePhotos from './components/profile/ProfilePhotos';
 import Logout from './components/settings/Logout';
+import EditProfile from './components/settings/EditProfile';
+import Account from './components/settings/Account';
+import Verification from './components/settings/Verification';
+import DeleteAcc from './components/settings/DeleteAcc';
 
 
 const router = createBrowserRouter([
@@ -38,9 +42,25 @@ const router = createBrowserRouter([
         element: <Settings />,
         children: [
           {
+            path: '/settings',
+            element: <Account />
+          },
+          {
             path: '/settings/logout',
             element: <Logout />
           },
+          {
+            path: '/settings/editprofile',
+            element: <EditProfile />
+          },
+          {
+            path: '/settings/verification',
+            element: <Verification />
+          },
+          {
+            path: '/settings/deleteaccount',
+            element: <DeleteAcc />
+          }
         ]
       },
       {
