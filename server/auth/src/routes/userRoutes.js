@@ -16,6 +16,9 @@ memberRoutes.get('/profile', memberController.getMemberProfile);
 memberRoutes.put('/updateprofile', memberController.editProfile);
 memberRoutes.delete('/deleteuser/:userId', memberController.deleteUser);
 memberRoutes.put('/updatepw', memberController.changePassword);
+// memberRoutes.get('/search', memberController.searchMember);
+memberRoutes.get('/getuser', memberController.getAUser);
+memberRoutes.get('/getuser/:userId', memberController.getAUserById);
 memberRoutes.get('/logout', sessionAuthorization, memberController.logoutMember);
 
 module.exports = memberRoutes;

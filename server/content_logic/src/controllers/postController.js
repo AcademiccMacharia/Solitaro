@@ -1,34 +1,46 @@
 module.exports = {
     getPosts: async (req, res) => {
-        try {
-            const pool = req.pool;
-            
-            if (pool.connected) {
-                const request = pool.request();
-                const result = await request.query('SELECT * FROM social.posts');
+        const { pool } = req;
 
-                res.json({
-                    success: true,
-                    message: "Posts retrieved successfully",
-                    data: result.recordset
-                });
+        try {
+            const request = await pool.request().execute('social.GetAllPostsData');
+
+            const posts = request.recordset;
+
+            console.log(posts);
+
+            if (posts.length === 0) {
+                return res.status(404).json({ success: false, message: 'No posts found' });
             } else {
-                res.status(500).json({ message: "Internal server error" });
+                const formattedPosts = posts.map(post => {
+                    return {
+                        post_id: post.post_id,
+                        user_id: post.user_id,
+                        post_content: post.post_content,
+                        post_image_url: post.post_image_url,
+                        post_video_url: post.post_video_url,
+                        post_created_at: post.post_created_at,
+                        post_likes_count: post.post_likes_count,
+                        total_comments_count: post.total_comments_count,
+                        comments: JSON.parse(post.comments),
+                    };
+                });
+
+                return res.json({ success: true, data: formattedPosts });
             }
         } catch (error) {
-            console.error("Error:", error);
-            res.status(500).json({ error: "Internal server error" });
+            console.error('Error:', error);
+            res.status(500).json({ success: false, message: 'Internal server error' });
         }
     },
-    //get a single user all posts
     getUserPosts: async (req, res) => {
         try {
             const pool = req.pool;
             const user_id = req.session?.member_id
 
             if (pool.connected) {
-                const request = pool.request() 
-                .input("userId", user_id)
+                const request = pool.request()
+                    .input("userId", user_id)
                 const result = await request.query('SELECT * FROM social.posts WHERE user_id = @userId');
                 //put a condition to check if they have posts otherwise say no posts found
                 if (result.recordset.length > 0) {
@@ -91,8 +103,8 @@ module.exports = {
             const pool = req.pool;
             if (pool.connected) {
                 let post = await pool.request()
-                            .input('post_id', post_id)
-                            .execute('social.GetPostByID');
+                    .input('post_id', post_id)
+                    .execute('social.GetPostByID');
                 console.log(post);
                 if (post.recordsets[0].length > 0) {
                     res.json({
@@ -110,23 +122,23 @@ module.exports = {
             } else {
                 res.status(500).json({ message: "Internal server error" });
             }
-            } catch (error) {
-                console.error("Error:", error);
-                res.status(500).json({ error: error.message });
-            }
-        },
-        updatePost: async (req, res) => {
-            try {
-                let {content} = req.body;
-                const pool = req.pool;
+        } catch (error) {
+            console.error("Error:", error);
+            res.status(500).json({ error: error.message });
+        }
+    },
+    updatePost: async (req, res) => {
+        try {
+            let { content } = req.body;
+            const pool = req.pool;
 
-                if (pool.connected) {
-                    let results = await pool.request()
-                        .input("id", req.params.id)
-                        .input("content", content)
-                        .execute('social.UpdatePost');
-                    console.log(results);
-                    if (results.recordsets[0].length>0){
+            if (pool.connected) {
+                let results = await pool.request()
+                    .input("id", req.params.id)
+                    .input("content", content)
+                    .execute('social.UpdatePost');
+                console.log(results);
+                if (results.recordsets[0].length > 0) {
                     res.json({
                         success: true,
                         message: "Post updated successfully",
@@ -138,45 +150,45 @@ module.exports = {
                         message: "Post not found"
                     });
                 }
+            } else {
+                res.status(500).json({ message: "Internal server error" });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            res.status(500).json({ error: error.message });
+        }
+    },
+    deletePost: async (req, res) => {
+        try {
+            const pool = req.pool;
+            if (pool.connected) {
+                let results = await pool.request()
+                    .input("id", req.params.id)
+                    .execute('social.DeletePost');
+
+                console.log(results);
+
+                const rowsAffected = results.recordsets[0][0].RowsAffected;
+
+                if (rowsAffected > 0) {
+                    res.json({
+                        success: true,
+                        message: "Post deleted successfully",
+                        data: rowsAffected
+                    });
                 } else {
-                    res.status(500).json({ message: "Internal server error" });
+                    res.status(404).json({
+                        success: false,
+                        message: "Post not found"
+                    });
                 }
-            } catch (error) {
-                console.error("Error:", error);
-                res.status(500).json({ error: error.message });
+            } else {
+                res.status(500).json({ message: "Internal server error" });
             }
-        },
-            deletePost: async (req, res) => {
-                try {
-                    const pool = req.pool;
-                    if (pool.connected) {
-                        let results = await pool.request()
-                            .input("id", req.params.id)
-                            .execute('social.DeletePost');
-            
-                        console.log(results);
-            
-                        const rowsAffected = results.recordsets[0][0].RowsAffected;
-                        
-                        if (rowsAffected > 0) {
-                            res.json({
-                                success: true,
-                                message: "Post deleted successfully",
-                                data: rowsAffected
-                            });
-                        } else {
-                            res.status(404).json({
-                                success: false,
-                                message: "Post not found"
-                            });
-                        }
-                    } else {
-                        res.status(500).json({ message: "Internal server error" });
-                    }
-                } catch (error) {
-                    console.error("Error:", error);
-                    res.status(500).json({ error: "Internal server error" });
-                }
-            }
-            
+        } catch (error) {
+            console.error("Error:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
     }
+
+}

@@ -6,10 +6,10 @@ const { sendWelcomeMail } = require('../utils/sendWelcomeMail');
 const { app } = require('../../server');
 
 module.exports = {
-  
+
   registerMember: async (req, res) => {
     try {
-        const {pool} = req;
+      const { pool } = req;
       let member = req.body;
       let hashedpwd = await bcrypt.hash(member.password, 8);
       let { value } = newMemberValidator(member);
@@ -42,10 +42,10 @@ module.exports = {
       res.status(500).json({ error: error.message });
     }
   },
-  
+
   loginMember: async (req, res) => {
     const { email, password } = req.body;
-    const {pool} = req;
+    const { pool } = req;
     try {
       const request = pool.request();
       request.input('email', mssql.VarChar, email);
@@ -79,26 +79,43 @@ module.exports = {
     }
   },
   getFollowedPosts: async (req, res) => {
-    const userId = req.session?.member_id;
-    const {pool} = req;
-    try {
-      const request = await pool.request()
-      .input('userId', userId)
-      .execute('social.GetFollowedPosts');
+  const userId = req.session?.member_id;
+  const { pool } = req;
 
-      console.log(request)
-      const posts = request.recordset;
-      console.log(posts);
-      if (posts.length === 0) {
-        return res.status(404).json({ success: false, message: 'No posts found' });
-      } else {
-        return res.json({ success: true, data: posts });
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
+  try {
+    const request = await pool
+      .request()
+      .input('userId', userId)
+      .execute('social.GetFollowedUsersPostData');
+
+    const posts = request.recordset;
+    
+    console.log(posts);
+
+    if (posts.length === 0) {
+      return res.status(404).json({ success: false, message: 'No posts found' });
+    } else {
+      const formattedPosts = posts.map(post => {
+        return {
+          post_id: post.post_id,
+          user_id: post.user_id,
+          post_content: post.post_content,
+          post_image_url: post.post_image_url,
+          post_video_url: post.post_video_url,
+          post_created_at: post.post_created_at,
+          post_likes_count: post.post_likes_count,
+          total_comments_count: post.total_comments_count,
+          comments: JSON.parse(post.comments),
+        };
+      });
+
+      return res.json({ success: true, data: formattedPosts });
     }
-  },
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+},
   changePassword: async (req, res) => {
     const { userId, currentPassword, newPassword } = req.body;
 
@@ -108,7 +125,7 @@ module.exports = {
       request.input('userId', mssql.UniqueIdentifier, userId);
       request.input('currentPassword', mssql.NVarChar(100), currentPassword);
       request.input('newPassword', mssql.NVarChar(100), newPassword);
-      
+
       const result = await request.query('EXEC social.ChangePassword @userId, @currentPassword, @newPassword');
       const success = result.recordset[0].Success;
 
@@ -126,7 +143,7 @@ module.exports = {
     const userId = req.session?.member_id;
     const { bio, dpUrl } = req.body;
     const { pool } = req;
-  
+
     try {
       const request = await pool.request()
         .input('userId', mssql.UniqueIdentifier, userId)
@@ -134,13 +151,13 @@ module.exports = {
         .input('dpUrl', mssql.VarChar(255), dpUrl)
         .execute('social.EditProfile');
 
-        console.log(request)
-        //condition
-        if (request.rowsAffected[0] === 0) {
-          res.status(404).json({ success: false, message: 'User not found' });
-        } else {
-      res.json({ success: true, message: 'Profile updated successfully' });
-        }
+      console.log(request)
+      //condition
+      if (request.rowsAffected[0] === 0) {
+        res.status(404).json({ success: false, message: 'User not found' });
+      } else {
+        res.json({ success: true, message: 'Profile updated successfully' });
+      }
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ success: false, message: 'Internal server error' });
@@ -163,6 +180,129 @@ module.exports = {
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+  },
+  //get all member details
+  getAUser: async (req, res) => {
+    const userId = req.session?.member_id;
+    const pool = req.pool;
+
+    try {
+      const request = await pool
+        .request()
+        .input('userId', mssql.UniqueIdentifier, userId)
+        .execute('social.GetAUser');
+
+      const profile = request.recordsets[0][0];
+      const posts = request.recordsets[1];
+      const comments = request.recordsets[2];
+      const replies = request.recordsets[3];
+
+      if (!profile) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      return res.status(200).json({
+        success: true,
+        data: {
+          profile: {
+            user_id: profile.user_id,
+            full_name: profile.full_name,
+            username: profile.username,
+            gender: profile.gender,
+            bio: profile.bio,
+            dp_url: profile.dp_url,
+            followers_count: profile.followers_count,
+            following_count: profile.following_count,
+            posts_count: profile.posts_count,
+          },
+          posts: posts.map((post) => ({
+            post_id: post.post_id,
+            user_id: post.user_id,
+            content: post.content,
+            image_url: post.image_url,
+            video_url: post.video_url,
+            created_at: post.created_at,
+          })),
+          comments: comments.map((comment) => ({
+            comment_id: comment.comment_id,
+            user_id: comment.user_id,
+            post_id: comment.post_id,
+            content: comment.content,
+            created_at: comment.created_at,
+          })),
+          replies: replies.map((reply) => ({
+            reply_id: reply.reply_id,
+            user_id: reply.user_id,
+            comment_id: reply.comment_id,
+            content: reply.content,
+            created_at: reply.created_at,
+          })),
+        },
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+  },
+  getAUserById: async (req, res) => {
+    const {userId} = req.params;
+    const pool = req.pool;
+
+    try {
+      const request = await pool
+        .request()
+        .input('userId', mssql.UniqueIdentifier, userId)
+        .execute('social.GetAUser');
+
+      const profile = request.recordsets[0][0];
+      const posts = request.recordsets[1];
+      const comments = request.recordsets[2];
+      const replies = request.recordsets[3];
+
+      if (!profile) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      return res.status(200).json({
+        success: true,
+        data: {
+          profile: {
+            user_id: profile.user_id,
+            full_name: profile.full_name,
+            username: profile.username,
+            gender: profile.gender,
+            bio: profile.bio,
+            dp_url: profile.dp_url,
+            followers_count: profile.followers_count,
+            following_count: profile.following_count,
+            posts_count: profile.posts_count,
+          },
+          posts: posts.map((post) => ({
+            post_id: post.post_id,
+            user_id: post.user_id,
+            content: post.content,
+            image_url: post.image_url,
+            video_url: post.video_url,
+            created_at: post.created_at,
+          })),
+          comments: comments.map((comment) => ({
+            comment_id: comment.comment_id,
+            user_id: comment.user_id,
+            post_id: comment.post_id,
+            content: comment.content,
+            created_at: comment.created_at,
+          })),
+          replies: replies.map((reply) => ({
+            reply_id: reply.reply_id,
+            user_id: reply.user_id,
+            comment_id: reply.comment_id,
+            content: reply.content,
+            created_at: reply.created_at,
+          })),
+        },
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error' });
     }
   },
   deleteUser: async (req, res) => {
@@ -188,13 +328,13 @@ module.exports = {
   },
   logoutMember: async (req, res) => {
     console.log(req.session)
-      req.session.destroy((err) => {
-        if (err) {
-          res.send("Error logging out");
-        } else {
-          res.send("Logged out successfully");
-        }
-      })
-    
+    req.session.destroy((err) => {
+      if (err) {
+        res.send("Error logging out");
+      } else {
+        res.send("Logged out successfully");
+      }
+    })
+
   }
 };

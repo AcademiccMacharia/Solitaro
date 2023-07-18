@@ -1,0 +1,76 @@
+
+.text-editor-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--container);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+  }
+  .toolbar {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+  }
+  
+  .toolbar button {
+    font-size: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: var(--text);
+  }
+  
+  .toolbar button.active {
+    color: #000;
+  }
+  
+  .bio-editor {
+    position: relative;
+  }
+  .textarea p{
+    font-size: 14px;
+    color: var(--text);
+  }
+  
+  .characters-left {
+    position: absolute;
+    top: -25px;
+    right: 0;
+    color: var(--text);
+    font-size: 12px;
+  }
+  
+  .editor {
+    resize: none;
+    height: 200px;
+    width: 800px;
+    padding: 10px;
+    background-color: var(--container);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 16px;
+  }
+  .bold {
+    font-weight: bold;
+  }
+  
+  .italic {
+    font-style: italic;
+  }
+  
+  .underline {
+    text-decoration: underline;
+  }
+  
+  .strike {
+    text-decoration: line-through;
+  }
+  
+
+  

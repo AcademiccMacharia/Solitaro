@@ -15,6 +15,7 @@
     background-color: inherit;
     color: var(--text);
     overflow-y: scroll;
+    font-family: 'Quicksand', sans-serif;
 }
 .profile::-webkit-scrollbar{
     width: 0.1em;
@@ -22,6 +23,12 @@
 }
 .profile::-webkit-scrollbar-thumb{
     background-color: transparent;
+}
+.profile-body-top{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 1000px;
 }
 .profile-body-top h1{
     text-align: center;
@@ -42,6 +49,10 @@
     margin-left: 60px;
     text-align: justify;
     margin-bottom: 20px;
+}
+.profile-bio p{
+    font-size: 14px;
+    line-height: 1.5;
 }
 .profile-body-top .profile-stats{
     display: flex;

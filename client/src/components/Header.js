@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { BiSearchAlt, BiMessageSquareDots } from 'react-icons/bi';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import landingLogo from '../assets/homeLogo-light.png';
-import man1 from '../assets/man1.jpg';
 import './header.css';
 import { Outlet, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -11,6 +10,11 @@ import DarkMode from './DarkMode';
 const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
 
   useEffect(() => {
@@ -31,6 +35,22 @@ const Header = () => {
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
+
+  const fetchProfile = async () => {
+    const response = await axios.get('http://localhost:5000/profile', { withCredentials: true });
+    console.log(response)
+    try {
+      if (response.data.success) {
+        setProfile(response.data.data)
+      }
+    } catch (err) {
+      alert(err)
+    }
+  };
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="nav-container">
@@ -66,7 +86,7 @@ const Header = () => {
             </i>
           </div>
           <div className="nav-image">
-            <img src={man1} alt="man" />
+            <img src={profile.dp_url} alt="man" />
           </div>
           <DarkMode />
         </div>

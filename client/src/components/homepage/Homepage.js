@@ -1,58 +1,149 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './homepage.css';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { CiHome, CiUser, CiSettings } from 'react-icons/ci';
 import { CgLivePhoto } from 'react-icons/cg';
 import { PiMessengerLogoThin } from 'react-icons/pi';
-import { GoComment } from 'react-icons/go';
-import { FcLikePlaceholder } from 'react-icons/fc'
-import { CiShare2 } from 'react-icons/ci';
 import verified from '../../assets/verified.png';
-import videoBg from '../../assets/videoBg.mp4'
-import vid from '../../assets/vid.mp4'
-import marcus from '../../assets/man4.jpg';
-import car from '../../assets/car2.jpg'
 import man1 from '../../assets/man1.jpg';
 import man2 from '../../assets/man2.jpg';
 import woman1 from '../../assets/woman1.jpg';
 import woman4 from '../../assets/woman3.jpg';
-import wrestling from '../../assets/wrestling.jpg';
-import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-// import { FaArrowDown } from 'react-icons/fa';
+import {MdCancel} from 'react-icons/md';
+import { Link, Outlet } from 'react-router-dom';
+
+import axios from 'axios';
 
 const Homepage = () => {
   const [activeLink, setActiveLink] = useState('Home');
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const videoRef1 = useRef(null);
-  const videoRef2 = useRef(null);
+  const [profile, setProfile] = useState(null);
+  const [content, setContent] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
+  };
+
+  const handleContentChange = (event) => {
+    setContent(event.target.value);
   }
 
-  const handleSoundToggle = () => {
-    setIsMuted(!isMuted);
-  };
-
-  const handlePlayPause = (videoRef) => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
+  const fetchProfile = async () => {
+    const response = await axios.get('http://localhost:5000/getuser', { withCredentials: true });
+    console.log(response);
+    try {
+      if (response.data.success) {
+        setProfile(response.data.data.profile);
+      }
+    } catch (err) {
+      alert(err);
     }
   };
 
-  const handleVideoLoaded = (videoRef) => {
-    if (!isPlaying) {
-      videoRef.current.pause();
+  const handleFileChange = (event, type) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      if (selectedFile.type.includes('image/') && type === 'image') {
+        setImageFile(selectedFile);
+        setImagePreview(URL.createObjectURL(selectedFile));
+      } else if (selectedFile.type.includes('video/') && type === 'video') {
+        setVideoFile(selectedFile);
+        setVideoPreview(URL.createObjectURL(selectedFile));
+      } else {
+        alert('Invalid file type. Please select an image (jpg, png, jpeg) or a video (mp4, mp3).');
+      }
     }
   };
 
+  const handleImageCancel = () => {
+    setImagePreview(null);
+    setImageFile(null);
+  };
+
+  const handleVideoCancel = () => {
+    setVideoPreview(null);
+    setVideoFile(null);
+  };
+
+  const uploadMedia = async (file) => {
+    const data = new FormData();
+    data.append('file', file);
+    data.append('upload_preset', 'solitaro');
+    data.append('cloud_name', 'dyqny6kxs');
+
+    try {
+      const response = await fetch('https://api.cloudinary.com/v1_1/dyqny6kxs/upload', {
+        method: 'post',
+        body: data,
+      });
+
+      if (!response.ok) {
+        throw new Error('Media upload failed.');
+      }
+
+      const responseData = await response.json();
+      return responseData.url;
+    } catch (err) {
+      console.error(err);
+      alert('Media upload failed. Please try again.');
+      return null;
+    }
+  };
+
+
+  const createPost = async () => {
+    const imageUrl = await uploadMedia(imageFile);
+    const videoUrl = await uploadMedia(videoFile);
+
+    const data = {
+      content: content,
+      image_url: imageUrl,
+      video_url: videoUrl,
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5051/posts', data, { withCredentials: true });
+      if (response.data.success) {
+        alert(response.data.message);
+        // Reset the content and file previews after successful post
+        setContent('');
+        setImagePreview(null);
+        setVideoPreview(null);
+        setImageFile(null);
+        setVideoFile(null);
+      } else {
+        alert('Failed to create post. Please try again.');
+      }
+    } catch (err) {
+      alert('Error creating post. Please try again.');
+      console.error(err);
+    }
+  };
+
+  const uploadImage = async () => {
+    const imageUrl = await uploadMedia(imageFile);
+    if (imageUrl) {
+      alert('Image uploaded successfully!');
+    }
+  };
+
+  const uploadVideo = async () => {
+    const videoUrl = await uploadMedia(videoFile);
+    if (videoUrl) {
+      alert('Video uploaded successfully!');
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='homepage'>
@@ -60,28 +151,28 @@ const Homepage = () => {
         <div className='profile-container'>
           <div className='profile-info'>
             <div className='profile-image'>
-              <img src={man1} alt='man' />
+              <img src={profile.dp_url} alt='man' />
             </div>
             <div className='username'>
               <div className='verification'>
-                <h3>Dwayne Johnson</h3>
+                <h3>{profile.full_name}</h3>
                 <img src={verified} alt='verified' />
               </div>
-              <p>@dwayne</p>
+              <p>@{profile.username}</p>
             </div>
           </div>
           <div className='profile-stats'>
             <div className='profile-stat'>
               <p>Posts</p>
-              <p>20</p>
+              <p>{profile.posts_count}</p>
             </div>
             <div className='profile-stat'>
               <p>Followers</p>
-              <p>100</p>
+              <p>{profile.followers_count}</p>
             </div>
             <div className='profile-stat'>
               <p>Following</p>
-              <p>500</p>
+              <p>{profile.following_count}</p>
             </div>
           </div>
         </div>
@@ -93,12 +184,12 @@ const Homepage = () => {
             >
               <CiHome size={20} color={activeLink === 'Home' ? 'gold' : 'black'} /> <span>Home</span>
             </li>
-            <li
+            <Link className='link' to='/messages'><li
               className={activeLink === 'Messages' ? 'active' : ''}
               onClick={() => handleLinkClick('Messages')}
             >
-              <PiMessengerLogoThin size={20} color={activeLink === 'Messages' ? 'gold' : 'black'} /> <span>Messages</span>
-            </li>
+              <PiMessengerLogoThin size={20} color={activeLink === 'Messages' ? 'gold' : 'black'} /> <span>Live Chat</span>
+            </li></Link>
             <li
               className={activeLink === 'Go Live' ? 'active' : ''}
               onClick={() => handleLinkClick('Go Live')}
@@ -186,246 +277,76 @@ const Homepage = () => {
           <div className='create-post'>
             <div className='create-post-top'>
               <div className='profile-image'>
-                <img src={man1} alt='man' />
+                <img src={profile.dp_url} alt='man' />
               </div>
               <div className='post-input'>
-                <input type='text' placeholder='What is on your mind?' />
-              </div>
-              <div className='post-button'>
-                <button>Post It!</button>
-              </div>
-            </div>
-            <div className='upload-button'>
-              <button>Photo</button>
-              <button>Video</button>
-            </div>
-          </div>
-          <div className='post-container'>
-            <div className='post-header'>
-              <div className='profile-image'>
-                <img src={marcus} alt='man' />
-              </div>
-              <div className='post-info'>
-                <div className='post-info-top'>
-                  <h3>Marcus Rashford</h3>
-                  <p>@m_arcus</p>
-                </div>
-                {/* <div className='post-info-bottom'>
-                  <p>2h</p>
-                  <p>Public</p>
-                  <p>...</p>
-                </div> */}
-              </div>
-            </div>
-            <div className='post-content'>
-              <p>
-                I am a footballer who currently plays as a forward for Premier League club Manchester United and the England national team. I have been playing for Manchester United since the age of seven. I have been playing for Manchester United since the age of seven.
-              </p>
-              <img src={car} alt='post1' />
-            </div>
-            <div className='post-stats'>
-              <div className='post-stat'>
-                <FcLikePlaceholder size={20} />
-                <p>20</p>
-              </div>
-              <div className='post-stat'>
-                <GoComment size={20} />
-                <p>100</p>
-              </div>
-              <div className='post-stat'>
-                <CiShare2 size={20} />
-                <p>500</p>
-              </div>
-            </div>
-          </div>
-          <div className='post-container'>
-            <div className='post-header'>
-              <div className='profile-image'>
-                <img src={man1} alt='man' />
-              </div>
-              <div className='post-info'>
-                <div className='post-info-top'>
-                  <h3>Dwayne Johnson</h3>
-                  <p>@dwayne</p>
-                </div>
-                {/* <div className='post-info-bottom'>
-                  <p>2h</p>
-                  <p>Public</p>
-                  <p>...</p>
-                </div> */}
-              </div>
-            </div>
-            <div className='post-content'>
-              <p>Hey guys, I am Dwayne Johnson. I am a professional wrestler and an actor. I am also known as The Rock. I am here to share my experience with you all. I hope you all will like it.</p>
-              <div
-                className="video-wrapper"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                <video
-                  src={videoBg}
-                  loop
-                  muted={isMuted}
-                  ref={videoRef1}
-                  onLoadedData={() => handleVideoLoaded(videoRef1)}
+                <input
+                  type='text'
+                  onChange={handleContentChange}
+                  value={content}
+                  placeholder='What is on your mind?'
                 />
-                {isHovered && (
-                  <div className="video-overlay">
-                    {isPlaying ? (
-                      <FaPause
-                        className="play-pause-icon"
-                        onClick={() => handlePlayPause(videoRef1)}
-                      />
-                    ) : (
-                      <FaPlay
-                        className="play-pause-icon"
-                        onClick={() => handlePlayPause(videoRef1)}
-                      />
-                    )}
-                  </div>
+              </div>
+              <button className='social-btn' onClick={createPost}>Post It!</button>
+            </div>
+            <div className='media-preview'>
+                {imagePreview && <img src={imagePreview} alt='preview' />
+                }
+                {imagePreview !== null &&
+                  <MdCancel onClick={handleImageCancel} size={20}/>
+                }
+                {videoPreview && (
+                  <video controls>
+                    <source src={videoPreview} type={videoFile?.type} />
+                    Your browser does not support the video tag.
+                  </video>
                 )}
-                <div className="mute-button">
-                  {isMuted ? (
-                    <FaVolumeMute
-                      className="volume-icon"
-                      onClick={handleSoundToggle}
-                    />
-                  ) : (
-                    <FaVolumeUp
-                      className="volume-icon"
-                      onClick={handleSoundToggle}
-                    />
-                  )}
-                </div>
+                {videoPreview !== null &&
+                  <MdCancel className='upload-cancel' onClick={handleVideoCancel} size={20}/>
+                }
               </div>
-            </div>
-            <div className='post-stats'>
-              <div className='post-stat'>
-                <FcLikePlaceholder size={20} />
-                <p>20</p>
-              </div>
-              <div className='post-stat'>
-                <GoComment size={20} />
-                <p>100</p>
-              </div>
-              <div className='post-stat'>
-                <CiShare2 size={20} />
-                <p>500</p>
-              </div>
-            </div>
-          </div>
-          <div className='post-container'>
-            <div className='post-header'>
-              <div className='profile-image'>
-                <img src={man1} alt='man' />
-              </div>
-              <div className='post-info'>
-                <div className='post-info-top'>
-                  <h3>Dwayne Johnson</h3>
-                  <p>@dwayne</p>
-                </div>
-                {/* <div className='post-info-bottom'>
-                  <p>2h</p>
-                  <p>Public</p>
-                  <p>...</p>
-                </div> */}
-              </div>
-            </div>
-            <div className='post-content'>
-              <p>Hey guys, I am Dwayne Johnson. I am a professional wrestler and an actor. I am also known as The Rock. I am here to share my experience with you all. I hope you all will like it.</p>
-              <div
-                className="video-wrapper"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                <video
-                  src={vid}
-                  loop
-                  muted={isMuted}
-                  ref={videoRef2}
-                  onLoadedData={() => handleVideoLoaded(videoRef2)}
+              <div className='upload-buttons'>
+                <label htmlFor='imageInput'>
+                  <button onClick={uploadImage}>Upload Photo</button>
+                </label>
+                <input
+                  type='file'
+                  id='imageInput'
+                  accept='image/*'
+                  onChange={(event) => handleFileChange(event, 'image')}
                 />
-                {isHovered && (
-                  <div className="video-overlay">
-                    {isPlaying ? (
-                      <FaPause
-                        className="play-pause-icon"
-                        onClick={() => handlePlayPause(videoRef2)}
-                      />
-                    ) : (
-                      <FaPlay
-                        className="play-pause-icon"
-                        onClick={() => handlePlayPause(videoRef2)}
-                      />
-                    )}
-                  </div>
-                )}
-                <div className="mute-button">
-                  {isMuted ? (
-                    <FaVolumeMute
-                      className="volume-icon"
-                      onClick={handleSoundToggle}
-                    />
-                  ) : (
-                    <FaVolumeUp
-                      className="volume-icon"
-                      onClick={handleSoundToggle}
-                    />
-                  )}
-                </div>
+                <label htmlFor='videoInput'>
+                  <button onClick={uploadVideo}>Upload Video</button>
+                </label>
+                <input
+                  type='file'
+                  id='videoInput'
+                  accept='video/*'
+                  onChange={(event) => handleFileChange(event, 'video')}
+                />
               </div>
-            </div>
-            <div className='post-stats'>
-              <div className='post-stat'>
-                <FcLikePlaceholder size={20} />
-                <p>20</p>
-              </div>
-              <div className='post-stat'>
-                <GoComment size={20} />
-                <p>100</p>
-              </div>
-              <div className='post-stat'>
-                <CiShare2 size={20} />
-                <p>500</p>
-              </div>
-            </div>
           </div>
-          <div className='post-container'>
-            <div className='post-header'>
-              <div className='profile-image'>
-                <img src={man1} alt='man' />
-              </div>
-              <div className='post-info'>
-                <div className='post-info-top'>
-                  <h3>Dwayne Johnson</h3>
-                  <p>@dwayne</p>
-                </div>
-                {/* <div className='post-info-bottom'>
-                  <p>2h</p>
-                  <p>Public</p>
-                  <p>...</p>
-                </div> */}
-              </div>
-            </div>
-            <div className='post-content'>
-              <p>Hey guys, I am Dwayne Johnson. I am a professional wrestler and an actor. I am also known as The Rock. I am here to share my experience with you all. I hope you all will like it.</p>
-              <img src={wrestling} alt='post1' />
-            </div>
-            <div className='post-stats'>
-              <div className='post-stat'>
-                <FcLikePlaceholder size={20} />
-                <p>20</p>
-              </div>
-              <div className='post-stat'>
-                <GoComment size={20} />
-                <p>100</p>
-              </div>
-              <div className='post-stat'>
-                <CiShare2 size={20} />
-                <p>500</p>
-              </div>
-            </div>
+          <div className='post-view'>
+            <h3>
+              <Link
+                className={`link ${activeLink === 'Feeds' ? 'active' : ''}`}
+                to='/home/feed'
+                onClick={() => handleLinkClick('Feeds')}
+              >
+                Feeds
+              </Link>
+            </h3>
+            <h3>
+              <Link
+                className={`link ${activeLink === 'For You' ? 'active' : ''}`}
+                to='/home'
+                onClick={() => handleLinkClick('For You')}
+              >
+                For You
+              </Link>
+            </h3>
           </div>
+          <Outlet />
         </div>
         <div className='following-container'>
           <div className='following-header'>
@@ -496,7 +417,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

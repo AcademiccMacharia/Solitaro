@@ -14,6 +14,9 @@ import EditProfile from './components/settings/EditProfile';
 import Account from './components/settings/Account';
 import Verification from './components/settings/Verification';
 import DeleteAcc from './components/settings/DeleteAcc';
+import Feed from './components/homepage/Feed';
+import Foryou from './components/homepage/Foryou';
+import Message from './components/message/Message';
 
 
 const router = createBrowserRouter([
@@ -35,7 +38,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/home',
-        element: <Homepage />
+        element: <Homepage />,
+        children: [{
+          path: '/home/feed',
+          element: <Feed />
+        },
+        {
+          path: '/home',
+          element: <Foryou />
+        }
+        ]
       },
       {
         path: '/settings',
@@ -62,6 +74,10 @@ const router = createBrowserRouter([
             element: <DeleteAcc />
           }
         ]
+      },
+      {
+        path: '/messages',
+        element: <Message />
       },
       {
         path: '/profile',
