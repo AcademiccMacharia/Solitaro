@@ -1,36 +1,71 @@
+
 module.exports = {
     getPosts: async (req, res) => {
-        const { pool } = req;
-
         try {
-            const request = await pool.request().execute('social.GetAllPostsData');
+            const pool = req.pool;
+            const request = await pool.request().execute('social.GetPostsWithCommentsAndReplies');
 
-            const posts = request.recordset;
-
-            console.log(posts);
+            const posts = request.recordsets[0];
 
             if (posts.length === 0) {
                 return res.status(404).json({ success: false, message: 'No posts found' });
-            } else {
-                const formattedPosts = posts.map(post => {
-                    return {
-                        post_id: post.post_id,
-                        user_id: post.user_id,
-                        post_content: post.post_content,
-                        post_image_url: post.post_image_url,
-                        post_video_url: post.post_video_url,
-                        post_created_at: post.post_created_at,
-                        post_likes_count: post.post_likes_count,
-                        total_comments_count: post.total_comments_count,
-                        comments: JSON.parse(post.comments),
-                    };
-                });
-
-                return res.json({ success: true, data: formattedPosts });
             }
+
+            const formattedPosts = posts.map(post => {
+                return {
+                    post_id: post.PostId,
+                    user_id: post.PostUserId,
+                    post_content: post.PostContent,
+                    image_url: post.imageUrl,
+                    video_url: post.videoUrl,
+                    post_created_at: post.PostCreatedAt,
+                    user_full_name: post.PostUserFullName,
+                    user_username: post.PostUserUsername,
+                    user_dp_url: post.PostUserDpUrl,
+                    comments: JSON.parse(post.comments),
+                };
+            });
+
+            return res.json({ success: true, data: formattedPosts });
         } catch (error) {
             console.error('Error:', error);
             res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    },
+    getPostDetails: async (req, res) => {
+        try {
+            const pool = req.pool;
+            const { postId } = req.params;
+            const response = await pool.request()
+                .input('postId', postId)
+                .execute('social.GetPostDetailsWithCommentsAndReplies');
+
+            console.log(response)
+
+            const postDetails = response.recordsets[0];
+            if (postDetails.length === 0) {
+                return res.status(404).json({ success: false, message: 'No posts found' });
+            }
+
+            const formattedPostDetails = postDetails.map(post => {
+                return {
+                    post_id: post.PostId,
+                    user_id: post.PostUserId,
+                    post_content: post.PostContent,
+                    image_url: post.imageUrl,
+                    video_url: post.videoUrl,
+                    post_created_at: post.PostCreatedAt,
+                    user_full_name: post.PostUserFullName,
+                    user_username: post.PostUserUsername,
+                    user_dp_url: post.PostUserDpUrl,
+                    comments: JSON.parse(post.comments),
+                };
+            });
+
+            return res.json({ success: true, data: formattedPostDetails });
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
         }
     },
     getUserPosts: async (req, res) => {

@@ -18,10 +18,26 @@ module.exports = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
-    
+    getUsersNotFollowed: async (req, res) => {
+        const { pool } = req;
+        const userId = req.session?.member_id;
+
+        try {
+            const request = await pool
+                .request()
+                .input('userId', userId)
+                .execute('social.GetUsersNotFollowed');
+
+            const users = request.recordset;
+            return res.json({ success: true, data: users });
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    },
     followUser: async (req, res) => {
         const following_user_id = req.session?.member_id;
-        let {followed_user_id} = req.body;
+        let { followed_user_id } = req.body;
         try {
             const pool = req.pool;
             if (pool.connected) {
@@ -46,10 +62,10 @@ module.exports = {
             }
         }
     },
-    
+
     unfollowUser: async (req, res) => {
         const following_user_id = req.session?.member_id;
-        let {followed_user_id} = req.body
+        let { followed_user_id } = req.body
         try {
             const pool = req.pool;
             if (pool.connected) {

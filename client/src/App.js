@@ -17,6 +17,11 @@ import DeleteAcc from './components/settings/DeleteAcc';
 import Feed from './components/homepage/Feed';
 import Foryou from './components/homepage/Foryou';
 import Message from './components/message/Message';
+import Notifications from './components/notifications/Notifications';
+import AllNotifications from './components/notifications/AllNotifications';
+import CommentNotifications from './components/notifications/CommentNotifications';
+import LikeNotifications from './components/notifications/LikeNotifications';
+import UserProfile from './components/homepage/UserProfile';
 
 
 const router = createBrowserRouter([
@@ -93,6 +98,28 @@ const router = createBrowserRouter([
           }
         ]
       },
+      {
+        path: '/notifications',
+        element: <Notifications />,
+        children: [
+          {
+          path: '/notifications',
+          element: <AllNotifications />
+        },
+        {
+          path: '/notifications/comment',
+          element: <CommentNotifications />
+        },
+        {
+          path: '/notifications/likes',
+          element: <LikeNotifications />
+        }
+      ]
+      },
+      {
+        path: '/singleprofile',
+        element: <UserProfile />,
+      }
     ]
   },
 ])

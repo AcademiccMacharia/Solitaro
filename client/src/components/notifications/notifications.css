@@ -1,0 +1,64 @@
+.notifications{
+    width: 80%;
+    height: 100vh;
+    background-color: var(--container);
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    margin-left: 160px;
+    margin-top: 20px;
+    font-family: 'Quicksand', sans-serif;
+    border-radius: 8px;
+}
+.notification-header button{
+    padding: 4px 6px;
+    background-color: inherit;
+    border: 1px solid lightcoral;
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 12px;
+    font-family: 'Quicksand', sans-serif;
+}
+.notification-header .link.active button{
+    background-color: goldenrod;
+}
+.notification-header button:hover{
+    box-shadow: 0 0 5px lightcoral;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+.notification-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+.notification{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: var(--text);
+    background-color: var(--background);
+    width: 90%;
+    transition: all .3s ease;
+}
+.notification:hover{
+    transform: scale(1.03);
+    box-shadow: 0 0 5px lightcoral;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+.notification-icons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.notification-icons .not-icon{
+    margin-right: 10px;
+    color: var(--text);
+}
+.notification-icons .not-icon:hover{
+    cursor: pointer;
+    color: red;
+}
