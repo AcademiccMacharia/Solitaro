@@ -24,14 +24,14 @@ const ProfilePosts = () => {
     <div className='profile-posts'>
       {posts.map((post) => (
         <div className='profile-post' key={post.id}>
-          {post.image_url !== null &&
+          {post.image_url && (
             <img src={post.image_url} alt='profile-post' />
-          }
-          {post.video_url !== null &&
+          )}
+          {post.video_url && (
             <video controls>
               <source src={post.video_url} type='video/mp4' />
             </video>
-          }
+          )}
         </div>
       ))}
     </div>
