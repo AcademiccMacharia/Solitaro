@@ -12,8 +12,10 @@ import woman4 from '../../assets/woman3.jpg';
 import placeholder from '../../assets/placeholder.png'
 import { MdCancel } from 'react-icons/md';
 import { Link, Outlet } from 'react-router-dom';
+import { RiImageAddFill, RiVideoAddFill } from 'react-icons/ri'; 
 
 import axios from 'axios';
+import Foryou from './Foryou';
 
 const Homepage = () => {
   const [activeLink, setActiveLink] = useState('Home');
@@ -49,10 +51,10 @@ const Homepage = () => {
     }
   }
 
-  const followUser = async(followed_user_id) => {
+  const followUser = async (followed_user_id) => {
     const data = {
       followed_user_id: followed_user_id
-  }
+    }
     try {
       const response = await axios.post(`http://localhost:5051/follow/`, data, {
         withCredentials: true,
@@ -132,7 +134,6 @@ const Homepage = () => {
     }
   };
 
-
   const createPost = async () => {
     const imageUrl = await uploadMedia(imageFile);
     const videoUrl = await uploadMedia(videoFile);
@@ -153,6 +154,8 @@ const Homepage = () => {
         setVideoPreview(null);
         setImageFile(null);
         setVideoFile(null);
+        fetchProfile();
+        <Foryou />
       } else {
         alert('Failed to create post. Please try again.');
       }
@@ -349,21 +352,17 @@ const Homepage = () => {
               <label htmlFor='imageInput'>
                 <button onClick={uploadImage}>Upload Photo</button>
               </label>
-              <input
-                type='file'
-                id='imageInput'
-                accept='image/*'
-                onChange={(event) => handleFileChange(event, 'image')}
-              />
+              <label htmlFor='imageInput' className='file-input-label'>
+                <RiImageAddFill className='label-icon' size={24} />
+              </label>
+              <input type='file' id='imageInput' accept='image/*' onChange={(event) => handleFileChange(event, 'image')} style={{ display: 'none' }} />
               <label htmlFor='videoInput'>
                 <button onClick={uploadVideo}>Upload Video</button>
               </label>
-              <input
-                type='file'
-                id='videoInput'
-                accept='video/*'
-                onChange={(event) => handleFileChange(event, 'video')}
-              />
+              <label htmlFor='videoInput' className='file-input-label'>
+                <RiVideoAddFill className='label-icon' size={24} />
+              </label>
+              <input type='file' id='videoInput' accept='video/*' onChange={(event) => handleFileChange(event, 'video')} style={{ display: 'none' }} />
             </div>
           </div>
           <div className='post-view'>
@@ -416,7 +415,6 @@ const Homepage = () => {
               <p>No suggestions found.</p>
             )}
           </div>
-
         </div>
       </div>
     </div >
@@ -424,3 +422,48 @@ const Homepage = () => {
 }
 
 export default Homepage
+
+
+
+// import React, { useState } from 'react';
+// import { RiImageAddFill } from 'react-icons/ri'; // Import the icon you want to use
+
+// const YourComponent = () => {
+//   const [content, setContent] = useState('');
+//   const [selectedFile, setSelectedFile] = useState(null);
+
+//   const handleContentChange = (event) => {
+//     setContent(event.target.value);
+//   };
+
+//   const handleFileChange = (event) => {
+//     const file = event.target.files[0];
+//     setSelectedFile(file);
+//   };
+
+//   const createPost = () => {
+//     // Here, you can use 'content' and 'selectedFile' to create the post
+//     // Send the content and file to your server using an API call (e.g., axios.post)
+
+//     // After creating the post, you may want to reset the state
+//     setContent('');
+//     setSelectedFile(null);
+//   };
+
+//   return (
+//     <div>
+//       <div className='post-input'>
+//         <input type='text' onChange={handleContentChange} value={content} placeholder='What is on your mind?' />
+//         <label htmlFor='file-input' className='file-input-label'>
+//           <RiImageAddFill size={24} /> {/* Your icon */}
+//         </label>
+//         <input type='file' id='file-input' onChange={handleFileChange} style={{ display: 'none' }} />
+//       </div>
+//       <button className='social-btn' onClick={createPost}>
+//         Post It!
+//       </button>
+//     </div>
+//   );
+// };
+
+// export default YourComponent;

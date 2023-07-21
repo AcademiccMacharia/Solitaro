@@ -1,7 +1,5 @@
-// import axios from 'axios'
 import React, { useState, useEffect } from 'react';
 import verified from '../../assets/verified.png';
-import man1 from '../../assets/man1.jpg';
 import { BsCameraVideo } from 'react-icons/bs';
 import { MdOutlineInsertPhoto, MdOutlineAddToPhotos } from 'react-icons/md';
 import './profile.css';
@@ -75,7 +73,7 @@ const Profile = () => {
               <ul>
                 <Link className='link' to='/profile'><li><span><MdOutlineInsertPhoto size={20} /></span>Posts</li></Link>
                 <Link className='link' to='/profile/photos'><li><span><MdOutlineAddToPhotos size={20} /></span>Photos</li></Link>
-                <li><span><BsCameraVideo size={20} /></span>Videos</li>
+                <Link className='link' to='/profile/videos'><li><span><BsCameraVideo size={20} /></span>Videos</li></Link>
               </ul>
             </div>
             <Outlet />

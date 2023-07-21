@@ -126,7 +126,7 @@ color: var(--text);
   grid-row: 3/4;
   grid-column: 1/2;
   width: 300px;
-  height: 150px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -272,6 +272,9 @@ color: var(--text);
     font-size: 14px;
     font-family: 'Quicksand', sans-serif;
   }
+  .create-post-top .post-input{
+    margin-left: 30px;
+  }
   .media-preview{
     display: flex;
     align-items: center;
@@ -319,6 +322,12 @@ color: var(--text);
 .upload-buttons button:hover{
   cursor: pointer;
 }
+.label-icon{
+  padding-top: 5px;
+}
+.label-icon:hover{
+  cursor: pointer;
+}
   .create-post-top .post-input {
     border-bottom: 1px solid var(--text);
     width: fit-content;
@@ -358,8 +367,8 @@ color: var(--text);
     margin-top: -15px;
   }
   
-  .upload-button button {
-    width: 100px;
+  .upload-buttons button {
+    width: 150px;
     height: 30px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -370,6 +379,10 @@ color: var(--text);
     background-color: var(--container);
     color: var(--text);
     text-transform: uppercase;
+  }
+  .upload-buttons button:hover{
+    box-shadow: 0 0 5px lightcoral;
+    transition: all .3s ease-in-out;
   }
   .post-view{
     display: flex;
@@ -383,7 +396,9 @@ color: var(--text);
     padding-bottom: 5px;
     transition: .3s ease-out;
   }
-  
+  .post-view .link.active{
+    border-bottom: 1px solid var(--accent);
+  }
   .post-container {
     background-color: var(--background);
     border-radius: 10px;

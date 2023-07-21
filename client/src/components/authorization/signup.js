@@ -9,9 +9,7 @@ import { FaArrowRight, FaGoogle} from 'react-icons/fa';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
-
-
+import ProgressBar from './ProgressBar';
 
 const Signup = () => {
 
@@ -25,6 +23,8 @@ const Signup = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoplayActive, setAutoplayActive] = useState(true);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -80,12 +80,9 @@ const Signup = () => {
   };
 
 
-
-
-
   const handleSignUp = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       const response = await fetch('http://localhost:5000/register', {
         method: 'POST',
@@ -109,6 +106,21 @@ const Signup = () => {
     }
   };
 
+  useEffect(() => {
+    let interval;
+  
+    if (isLoading) {
+      setLoadingProgress(0);
+      interval = setInterval(() => {
+        setLoadingProgress((prevProgress) => {
+          const newProgress = prevProgress + 5;
+          return newProgress > 100 ? 100 : newProgress;
+        });
+      }, 500);
+    }
+  
+    return () => clearInterval(interval);
+  }, [isLoading]);
 
   return (
     <div className='login-page'>
@@ -138,6 +150,7 @@ const Signup = () => {
         </div>
       </div>
       <div className='signup-right'>
+      {isLoading ? <ProgressBar percentage={loadingProgress} /> : ''}
         <div className='signup-header'>
           <h1>Create An Account</h1>
           <p>Sign Up and start your journey with us.</p>

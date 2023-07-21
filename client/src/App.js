@@ -22,6 +22,7 @@ import AllNotifications from './components/notifications/AllNotifications';
 import CommentNotifications from './components/notifications/CommentNotifications';
 import LikeNotifications from './components/notifications/LikeNotifications';
 import UserProfile from './components/homepage/UserProfile';
+import ProfileVideo from './components/profile/ProfileVideo';
 
 
 const router = createBrowserRouter([
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
           {
             path: '/profile/photos',
             element: <ProfilePhotos />
+          },
+          {
+            path: '/profile/videos',
+            element: <ProfileVideo />
           }
         ]
       },

@@ -51,6 +51,7 @@ const Foryou = () => {
         }
     };
 
+
     useEffect(() => {
         fetchPosts();
     }, []);

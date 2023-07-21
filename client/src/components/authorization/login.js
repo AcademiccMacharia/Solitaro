@@ -7,6 +7,7 @@ import loving from '../../assets/selfie.png';
 import { FaArrowRight, FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import ProgressBar from './ProgressBar';
 import axios from 'axios';
 
 const Login = () => {
@@ -17,6 +18,8 @@ const Login = () => {
   const [autoplayActive, setAutoplayActive] = useState(true);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -54,11 +57,25 @@ const handleDotClick = (index) => {
     setAutoplayActive(true)
 };
 
+useEffect(() => {
+  let interval;
 
+  if (isLoading) {
+    setLoadingProgress(0);
+    interval = setInterval(() => {
+      setLoadingProgress((prevProgress) => {
+        const newProgress = prevProgress + 5;
+        return newProgress > 100 ? 100 : newProgress;
+      });
+    }, 500);
+  }
+
+  return () => clearInterval(interval);
+}, [isLoading]);
 
 const handleLogin = async (e) => {
   e.preventDefault();
-
+  setIsLoading(true);
   try {
     const response = await axios.post('http://localhost:5000/login', {
       email,
@@ -123,6 +140,7 @@ const handleLogin = async (e) => {
         </div>
       </div>
       <div className='login-right'>
+      {isLoading ? <ProgressBar percentage={loadingProgress} /> : ''}
         <div className='login-header'>
           <h1>Hello Again!</h1>
           <p>Login and continue your journey with us</p>
@@ -159,7 +177,7 @@ const handleLogin = async (e) => {
             </div>
             <div className='form-group'>
               <button type='submit'>
-                <FaArrowRight />
+              <FaArrowRight />
               </button>
             </div>
             <div className='form-group'>
@@ -206,3 +224,61 @@ const handleLogin = async (e) => {
 };
 
 export default Login;
+
+
+
+
+
+
+
+// /* ProgressBar.css */
+
+
+
+// // Login.js
+// import React, { useState, useEffect } from 'react';
+// // Other imports
+// import ProgressBar from './ProgressBar';
+
+// const Login = () => {
+//   // Existing state and functions
+
+//   const [isLoading, setIsLoading] = useState(false); // New state for loading indicator
+//   const [loadingProgress, setLoadingProgress] = useState(0);
+
+  
+
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     setIsLoading(true); // Start loading indicator
+
+//     try {
+//       // Same login logic
+//       // ...
+//     } catch (error) {
+//       // Same error handling logic
+//       // ...
+//     }
+//   };
+
+//   return (
+//     <div className='login-page'>
+//       {/* Other JSX code */}
+//       <div className='login-form'>
+//         <form onSubmit={handleLogin}>
+//           {/* Other form elements */}
+//           <div className='form-group'>
+//             <button type='submit'>
+//               {isLoading ? <ProgressBar percentage={loadingProgress} /> : <FaArrowRight />}
+//             </button>
+//           </div>
+//           {isLoading && <p>Loading...</p>}
+//           {message && <p className='login-message'>{message}</p>}
+//         </form>
+//       </div>
+//       {/* Other JSX code */}
+//     </div>
+//   );
+// };
+
+// export default Login;
