@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoComment } from 'react-icons/go';
-import { FcLikePlaceholder } from 'react-icons/fc';
+import { AiOutlineLike } from 'react-icons/ai';
 import { CiShare2 } from 'react-icons/ci';
 import axios from 'axios';
 import placeholder2 from '../../assets/placeholder2.png';
@@ -14,9 +14,50 @@ const Foryou = () => {
   const [postCommentInputs, setPostCommentInputs] = useState({});
   const [postReplyInputs, setPostReplyInputs] = useState({});
   const [showCommentReplies, setShowCommentReplies] = useState({});
+  const [likedPosts, setLikedPosts] = useState({});
 
   const handleUserImageClick = (user) => {
     setSelectedUser(user);
+  };
+
+  const handlePostLike = async (post_id) => {
+    try {
+      const isPostLiked = likedPosts[post_id];
+      const action = isPostLiked ? 1 : 0;
+
+      const response = await axios.post(
+        'http://localhost:5051/likes',
+        {
+          likeType: 'post',
+          entityId: post_id,
+          action: action,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+        console.log(response)
+      setLikedPosts((prevLikedPosts) => ({
+        ...prevLikedPosts,
+        [post_id]: !isPostLiked,
+      }));
+
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.post_id === post_id
+            ? {
+                ...post,
+                post_likes_count: post.post_likes_count + (isPostLiked ? -1 : 1),
+              }
+            : post
+        )
+      );
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const handlePostClick = async (post_id) => {
@@ -30,7 +71,7 @@ const Foryou = () => {
         const response = await axios.get(`http://localhost:5051/postdetails/${post_id}`, {
           withCredentials: true,
         });
-        console.log(response.data.data[0].comments);
+
         if (response.data.success) {
           setPostComments((prevComments) => ({
             ...prevComments,
@@ -55,6 +96,7 @@ const Foryou = () => {
   const fetchPosts = async () => {
     try {
       const response = await axios.get('http://localhost:5051/posts', { withCredentials: true });
+
       if (response.data.success) {
         setPosts(response.data.data);
       } else {
@@ -79,6 +121,7 @@ const Foryou = () => {
       post_id: post_id,
       content: commentText,
     };
+
     try {
       await axios.post(
         `http://localhost:5051/comments`,
@@ -97,7 +140,6 @@ const Foryou = () => {
     }
   };
 
-
   const handleReplyInputChange = (e, comment_id) => {
     setPostReplyInputs((prevInputs) => ({
       ...prevInputs,
@@ -105,14 +147,15 @@ const Foryou = () => {
     }));
   };
 
-  const handleReplySubmit  = async(comment_id) => {
+  const handleReplySubmit = async (comment_id) => {
     const replyText = postReplyInputs[comment_id];
     const data = {
       comment_id: comment_id,
       content: replyText,
     };
+
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:5051/reply`,
         data,
         {
@@ -122,13 +165,12 @@ const Foryou = () => {
           },
         }
       );
-      console.log(response);
+
       fetchPosts();
     } catch (error) {
       console.error('Error:', error);
     }
-  }
-
+  };
 
   const handleToggleCommentReplies = (commentId) => {
     setShowCommentReplies((prevReplies) => ({
@@ -194,7 +236,11 @@ const Foryou = () => {
               </div>
               <div className='post-stats'>
                 <div className='post-stat'>
-                  <FcLikePlaceholder size={20} />
+                  <AiOutlineLike
+                    size={20}
+                    onClick={() => handlePostLike(post.post_id)}
+                    style={{ color: likedPosts[post.post_id] ? 'red' : 'inherit' }}
+                  />
                   <p>{post.post_likes_count}</p>
                 </div>
                 <div className='post-stat'>
