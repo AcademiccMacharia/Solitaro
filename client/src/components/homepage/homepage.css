@@ -510,7 +510,37 @@
 .post-stat p {
   margin-left: 10px;
 }
-
+.comment-input{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+.comment-input input{
+  width: 90%;
+  height: 30px;
+  border-radius: 10px;
+  background-color: var(--container);
+  color: var(--text);
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.comment-input button{
+  width: 10%;
+  height: 30px;
+  border-radius: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: var(--container);
+  color: var(--text);
+}
 .following-container {
   grid-row: 1/4;
   grid-column: 3/4;
@@ -623,7 +653,83 @@
 .footer{
   display: none;
 }
-
+.comment-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: var(--container);
+  border-radius: 10px;
+}
+.comment{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.comment-body img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.comment-content h6{
+  font-size: 12px;
+  color: lightcoral;
+}
+.replies-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+}
+.reply{
+  display: flex;
+  align-items: center;
+  width: 85%;
+  height: fit-content;
+  padding: 10px;
+}
+.reply-input{
+  display: flex;
+  align-items: center;
+  width: 85%;
+  height: fit-content;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+.reply-input input{
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  background-color: var(--background);
+  color: var(--text);
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.reply-input button{
+  width: 15%;
+  height: 30px;
+  border-radius: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: var(--background);
+  color: var(--text);
+}
 @media (max-width: 1150px) {
   .following-container {
     display: none;
