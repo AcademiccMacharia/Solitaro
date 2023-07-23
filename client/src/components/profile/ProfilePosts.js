@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './profile.css';
 
-const ProfilePosts = () => {
+const ProfileVideo = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -23,14 +23,14 @@ const ProfilePosts = () => {
   return (
     <div className='profile-posts'>
       {posts.map((post) => (
-        <div className='profile-post' key={post.id}>
-          {post.image_url && (
-            <img src={post.image_url} alt='profile-post' />
-          )}
+        <div className='profile-post' key={post.post_id}>
           {post.video_url && (
             <video controls>
               <source src={post.video_url} type='video/mp4' />
             </video>
+          )}
+          {post.image_url && (
+            <img src={post.image_url} alt='profile-post' />
           )}
         </div>
       ))}
@@ -38,4 +38,4 @@ const ProfilePosts = () => {
   );
 };
 
-export default ProfilePosts;
+export default ProfileVideo;

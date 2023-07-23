@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './settings.css';
 import axios from 'axios';
 import TextEditor from './TextEditor';
+import placeholder2 from '../../assets/placeholder2.png';
 import man1 from '../../assets/man1.jpg';
 
 const EditProfile = () => {
@@ -58,7 +59,7 @@ const EditProfile = () => {
         <div className='edit-profile'>
             <div className='edit-header'>
                 <div className='edit-header-left'>
-                    <img src={url} alt='man1' />
+                    <img src={url ? url : placeholder2} alt='man1' />
                     <div className='edit-header-text'>
                         <h3>Profile</h3>
                         <p>Update your profile photo and personal details.</p>
@@ -80,7 +81,7 @@ const EditProfile = () => {
                         <p>Upload a photo of yourself.</p>
                     </div>
                     <div className='edit-field-input'>
-                        <img src={url} alt='man1' />
+                        <img src={url ? url : placeholder2} alt='man1' />
                         <div className='edit-field-btn'>
                             <input type="file" onChange={(e) => setImage(e.target.files[0])}></input>
                             <button className="social-btn" onClick={uploadImage}>Upload</button>

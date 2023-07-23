@@ -23,11 +23,14 @@ import CommentNotifications from './components/notifications/CommentNotification
 import LikeNotifications from './components/notifications/LikeNotifications';
 import UserProfile from './components/homepage/UserProfile';
 import ProfileVideo from './components/profile/ProfileVideo';
+import Relationships from './components/profile/Relationships';
+import Followers from './components/profile/Followers';
+import Following from './components/profile/Following';
 
 
 const router = createBrowserRouter([
   {
-    path: '/soli',
+    path: '/landing',
     element: <LandingPage />,
   },
   {
@@ -124,6 +127,19 @@ const router = createBrowserRouter([
       {
         path: '/singleprofile',
         element: <UserProfile />,
+      },
+      {
+        path: '/relationships',
+        element: <Relationships />,
+        children: [{
+          path: '/relationships',
+          element: <Followers />
+        },
+        {
+          path: '/relationships/following',
+          element: <Following />
+        }
+      ]
       }
     ]
   },

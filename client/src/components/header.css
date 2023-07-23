@@ -123,3 +123,31 @@
 }
 /* Add any additional styles as needed */
 
+@media (max-width: 1100px) {
+  .navbar-center h1{
+    display: none;
+  }
+}
+
+@media (max-width: 950px) {
+  .navbar-center{
+    display: none;
+  }
+  .navbar-left .logo img {
+   display: none;
+  }
+}
+@media (max-width: 500px) {
+  .navbar-home {
+    height: 5%;
+    border-bottom: none;
+  }
+.nav-image img {
+  display: none;
+}
+.navbar-right {
+  justify-content: space-around;
+  margin-right: 10px;
+  width: fit-content;
+}
+}

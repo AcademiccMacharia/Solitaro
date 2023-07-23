@@ -24,9 +24,9 @@ const ProfilePhotos = () => {
     <div className='profile-posts'>
       {posts.map((post) => (
         <div className='profile-post' key={post.id}>
-          {post.image_url !== null &&
+          {post.image_url && (
             <img src={post.image_url} alt='profile-post' />
-          }
+          )}
         </div>
       ))}
     </div>

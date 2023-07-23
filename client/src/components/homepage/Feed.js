@@ -4,7 +4,7 @@ import { FcLikePlaceholder } from 'react-icons/fc'
 import { CiShare2 } from 'react-icons/ci';
 import SinglePostDetails from '../homepage/SinglePost';
 import axios from 'axios';
-import man1 from '../../assets/man1.jpg';
+import placeholder2 from '../../assets/placeholder2.png';
 
 const Feed = () => {
 
@@ -57,12 +57,12 @@ const Feed = () => {
                             <div>
                                 <div className='post-header'>
                                     <div className='profile-image'>
-                                        <img src={man1} alt='man' />
+                                        <img src={post.dp_url ? post.dp_url : placeholder2} alt='man' />
                                     </div>
                                     <div className='post-info'>
                                         <div className='post-info-top'>
-                                            <h3>Jane Smith</h3>
-                                            <p>@janesmith</p>
+                                            <h3>{post.full_name}</h3>
+                                            <p>@{post.username}</p>
                                         </div>
                                     </div>
                                 </div>

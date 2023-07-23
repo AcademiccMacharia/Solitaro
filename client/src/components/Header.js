@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BiSearchAlt, BiMessageSquareDots } from 'react-icons/bi';
 import { IoMdNotificationsOutline } from 'react-icons/io';
-import landingLogo from '../assets/homeLogo-light.png';
+import landingLogo from '../assets/homeLogo-dark.png';
 import './header.css';
 import { Outlet, Link } from 'react-router-dom';
+import placeholder2 from '../assets/placeholder2.png';
 import axios from 'axios';
 import DarkMode from './DarkMode';
 
@@ -20,7 +21,7 @@ const Header = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/notifications", {
+        const response = await axios.get("http://localhost:8000/notification", {
           withCredentials: true,
         });
         setNotifications(response.data.data);
@@ -80,13 +81,13 @@ const Header = () => {
               <IoMdNotificationsOutline />
             </i>
           </div>
-          <div className="nav-icon">
+          <div className="nav-icon" id="message-icon">
             <i>
               <BiMessageSquareDots />
             </i>
           </div>
           <div className="nav-image">
-            <img src={profile.dp_url} alt="man" />
+            <img src={profile.dp_url ? profile.dp_url : placeholder2} alt="man" />
           </div>
           <DarkMode />
         </div>
@@ -97,11 +98,19 @@ const Header = () => {
           <h3>Notifications</h3>
         </div>
         <div className="notifications-list">
-          {notifications.map((notification, index) => (
-            <div className="notification" key={index}>
-              <p>{notification}</p>
+          {notifications.length === 0 ? (
+            <div className="notification">
+              <p>No recent notifications</p>
             </div>
-          ))}
+          ) : (
+            notifications
+              .filter((notification) => !notification.IsRead)
+              .map((notification) => (
+                <div className="notification" key={notification.notification_id}>
+                  <p>{notification.description}</p>
+                </div>
+              ))
+          )}
         </div>
       </div>
     </div>
@@ -109,3 +118,4 @@ const Header = () => {
 };
 
 export default Header;
+

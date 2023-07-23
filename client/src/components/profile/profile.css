@@ -17,13 +17,21 @@
     overflow-y: scroll;
     font-family: 'Quicksand', sans-serif;
 }
-.profile::-webkit-scrollbar{
-    width: 0.1em;
+.profile::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    border-radius: 12px;
+  }
+  
+.profile:-webkit-scrollbar-track {
     background-color: transparent;
-}
-.profile::-webkit-scrollbar-thumb{
-    background-color: transparent;
-}
+  }
+  
+.profile::-webkit-scrollbar-thumb {
+    background-color: #cfbfbf;
+    border-radius: 12px;
+  }
+  
 .profile-body{
     width: 100%;
 }
@@ -94,9 +102,7 @@
 .profile-posts{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    place-content: center;
     place-self: center;
-    place-items: center;
     gap: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -112,6 +118,37 @@
     height: 350px;
     object-fit: cover;
     border-radius: 10px;
-    margin-left: 40px;
     margin-top: 10px;
+  }
+  
+  .profile-post:empty {
+    display: none;
+  }
+  
+  .relationships{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin: auto 300px;
+    margin-left: 700px;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 20%;
+    height: 80%;
+    background-color: var(--container);
+    color: var(--text);
+    font-family: 'Quicksand', sans-serif;
+  }
+  .relationships-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .relationships-header .link:active{
+    color: var(--accent);
   }

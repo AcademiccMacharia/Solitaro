@@ -61,7 +61,8 @@ const AllNotifications = () => {
 
     return (
         <div className='notification-body'>
-            {notifications.map((notification) => (
+            {notifications && notifications.length > 0 ? ( 
+            notifications.map((notification) => (
                 <div className='notification' key={notification.notification_id}>
                     <div>
                         <p>{notification.description}</p>
@@ -73,7 +74,10 @@ const AllNotifications = () => {
                         <RxCrossCircled className='not-icon' size={20} onClick={() => deleteNotification(notification.notification_id)} />
                     </div>
                 </div>
-            ))}
+            ))
+            ) : (
+              <p>All notifications will appear here...</p>
+            )}
         </div>
     );
 };

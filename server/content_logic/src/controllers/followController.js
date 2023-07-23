@@ -35,6 +35,40 @@ module.exports = {
             res.status(500).json({ success: false, message: 'Internal server error' });
         }
     },
+    getFollowers: async (req, res) => {
+        const { pool } = req;
+        const userId = req.session?.member_id;
+
+        try {
+            const request = await pool
+                .request()
+                .input('userId', userId)
+                .execute('social.GetFollowers');
+
+            const users = request.recordset;
+            return res.json({ success: true, data: users });
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    },
+    getFollowing: async (req, res) => {
+        const { pool } = req;
+        const userId = req.session?.member_id;
+
+        try {
+            const request = await pool
+                .request()
+                .input('userId', userId)
+                .execute('social.GetFollowing');
+
+            const users = request.recordset;
+            return res.json({ success: true, data: users });
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    },
     followUser: async (req, res) => {
         const following_user_id = req.session?.member_id;
         let { followed_user_id } = req.body;

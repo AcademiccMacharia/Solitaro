@@ -9,7 +9,7 @@ const LikeNotifications = () => {
 
     const fetchNotifications = async () => {
         try {
-            const response = await axios.get("http://localhost:8000/likenotification", {
+            const response = await axios.get("http://localhost:8000/likenotifications", {
                 withCredentials: true,
             });
             setNotifications(response.data.data);
@@ -58,7 +58,8 @@ const LikeNotifications = () => {
 
     return (
         <div className='notification-body'>
-            {notifications.map((notification) => (
+          {notifications && notifications.length > 0 ? ( 
+            notifications.map((notification) => (
                 <div className='notification' key={notification.notification_id}>
                     <div>
                         <p>{notification.description}</p>
@@ -70,7 +71,10 @@ const LikeNotifications = () => {
                         <RxCrossCircled className='not-icon' size={20} onClick={() => deleteNotification(notification.notification_id)} />
                     </div>
                 </div>
-            ))}
+            ))
+          ) : (
+            <p>Like notifications will appear here...</p>
+          )}
         </div>
     );
 };

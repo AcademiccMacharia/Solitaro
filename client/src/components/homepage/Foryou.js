@@ -3,7 +3,7 @@ import { GoComment } from 'react-icons/go';
 import { FcLikePlaceholder } from 'react-icons/fc';
 import { CiShare2 } from 'react-icons/ci';
 import axios from 'axios';
-import man1 from '../../assets/man1.jpg';
+import placeholder2 from '../../assets/placeholder2.png';
 import UserProfile from './UserProfile';
 
 const Foryou = () => {
@@ -73,7 +73,7 @@ const Foryou = () => {
                         <div>
                             <div className='post-header'>
                                 <div className='profile-image'>
-                                    <img src={man1} alt='man' onClick={() => handleUserImageClick(post)} />
+                                    <img src={post.user_dp_url ? post.user_dp_url : placeholder2} alt='man' onClick={() => handleUserImageClick(post)} />
                                 </div>
                                 <div className='post-info'>
                                     <div className='post-info-top'>
@@ -112,7 +112,6 @@ const Foryou = () => {
                                 </div>
                                 <div
                                     className='post-stat'
-
                                 >
                                     <GoComment onClick={() => handlePostClick(post.post_id)} size={20} />
                                     <p>{post.total_comments_count}</p>
@@ -122,13 +121,11 @@ const Foryou = () => {
                                     <p>{post.total_shares_count}</p>
                                 </div>
                             </div>
-                            {/* Display comments below the post when they are available */}
                             {selectedPostComments && selectedPostComments.length > 0 && (
                                 <div className='comments-container'>
                                     {selectedPostComments.map((comment) => (
                                         <div key={comment.CommentId} className='comment'>
                                             <p>{comment.CommentContent}</p>
-                                            {/* Display replies if available */}
                                             {comment.replies && comment.replies.length > 0 && (
                                                 <div className='replies'>
                                                     {comment.replies.map((reply) => (

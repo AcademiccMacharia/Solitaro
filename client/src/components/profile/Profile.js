@@ -4,6 +4,7 @@ import { BsCameraVideo } from 'react-icons/bs';
 import { MdOutlineInsertPhoto, MdOutlineAddToPhotos } from 'react-icons/md';
 import './profile.css';
 import { Link, Outlet } from 'react-router-dom';
+import placeholder2 from '../../assets/placeholder2.png';
 import axios from 'axios';
 
 const Profile = () => {
@@ -39,7 +40,7 @@ const Profile = () => {
           <h1>Profile</h1>
           <div className='profile-info'>
             <div className='profile-image'>
-              <img src={profile.dp_url} alt='man' />
+              <img src={profile.dp_url ? profile.dp_url : placeholder2} alt='man' />
             </div>
             <div className='username'>
               <div className='verification'>
@@ -58,11 +59,11 @@ const Profile = () => {
               <p>{profile.posts_count}</p>
             </div>
             <div className='profile-stat'>
-              <h3>Followers</h3>
+              <h3><Link to='/relationships' className='link'>Followers</Link></h3>
               <p>{profile.followers_count}</p>
             </div>
             <div className='profile-stat'>
-              <h3>Following</h3>
+              <h3><Link to='/relationships/following' className='link'>Following</Link></h3>
               <p>{profile.following_count}</p>
             </div>
           </div>

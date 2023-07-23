@@ -107,9 +107,7 @@ const handleLogin = async (e) => {
     console.error('Login error:', error);
     setMessage('Login failed. Please try again.');
   }
-};
-
-
+};  
  
 
   return (

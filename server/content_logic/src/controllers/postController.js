@@ -22,6 +22,8 @@ module.exports = {
                     user_full_name: post.PostUserFullName,
                     user_username: post.PostUserUsername,
                     user_dp_url: post.PostUserDpUrl,
+                    post_likes_count: post.post_likes_count,
+                    total_comments_count: post.total_comments_count,
                     comments: JSON.parse(post.comments),
                 };
             });
@@ -58,6 +60,7 @@ module.exports = {
                     user_full_name: post.PostUserFullName,
                     user_username: post.PostUserUsername,
                     user_dp_url: post.PostUserDpUrl,
+                    
                     comments: JSON.parse(post.comments),
                 };
             });

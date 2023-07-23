@@ -12,6 +12,7 @@ const CommentNotifications = () => {
             const response = await axios.get("http://localhost:8000/commentnotifications", {
                 withCredentials: true,
             });
+            console.log(response)
             setNotifications(response.data.data);
         } catch (error) {
             console.error("Error fetching notifications:", error);
@@ -58,7 +59,8 @@ const CommentNotifications = () => {
 
     return (
         <div className='notification-body'>
-            {notifications.map((notification) => (
+            {notifications && notifications.length > 0 ? ( 
+            notifications.map((notification) => (
                 <div className='notification' key={notification.notification_id}>
                     <div>
                         <p>{notification.description}</p>
@@ -70,7 +72,10 @@ const CommentNotifications = () => {
                         <RxCrossCircled className='not-icon' size={20} onClick={() => deleteNotification(notification.notification_id)} />
                     </div>
                 </div>
-            ))}
+            ))
+            ) : (
+              <p>Comment notifications will appear here...</p>
+            )}
         </div>
     );
 };

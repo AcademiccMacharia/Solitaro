@@ -9,7 +9,7 @@ import man1 from '../../assets/man1.jpg';
 import man2 from '../../assets/man2.jpg';
 import woman1 from '../../assets/woman1.jpg';
 import woman4 from '../../assets/woman3.jpg';
-import placeholder from '../../assets/placeholder.png'
+import placeholder from '../../assets/placeholder2.png'
 import { MdCancel } from 'react-icons/md';
 import { Link, Outlet } from 'react-router-dom';
 import { RiImageAddFill, RiVideoAddFill } from 'react-icons/ri'; 
@@ -194,7 +194,7 @@ const Homepage = () => {
         <div className='profile-container'>
           <div className='profile-info'>
             <div className='profile-image'>
-              <img src={profile.dp_url} alt='man' />
+              <img src={profile.dp_url ? profile.dp_url : placeholder} alt='man' />
             </div>
             <div className='username'>
               <div className='verification'>
@@ -210,11 +210,11 @@ const Homepage = () => {
               <p>{profile.posts_count}</p>
             </div>
             <div className='profile-stat'>
-              <p>Followers</p>
+              <p>Following</p>
               <p>{profile.followers_count}</p>
             </div>
             <div className='profile-stat'>
-              <p>Following</p>
+              <p>Followers</p>
               <p>{profile.following_count}</p>
             </div>
           </div>
@@ -320,7 +320,7 @@ const Homepage = () => {
           <div className='create-post'>
             <div className='create-post-top'>
               <div className='profile-image'>
-                <img src={profile.dp_url} alt='man' />
+                <img src={profile.dp_url ? profile.dp_url : placeholder} alt='man' />
               </div>
               <div className='post-input'>
                 <input
@@ -330,7 +330,7 @@ const Homepage = () => {
                   placeholder='What is on your mind?'
                 />
               </div>
-              <button className='social-btn' onClick={createPost}>Post It!</button>
+              <button className='social-btn' id="posting-btn" onClick={createPost}>Post It!</button>
             </div>
             <div className='media-preview'>
               {imagePreview && <img src={imagePreview} alt='preview' />
@@ -402,7 +402,6 @@ const Homepage = () => {
                   <div className='following-info'>
                     <div className='verification'>
                       <h3>{suggestion.full_name}</h3>
-                      <img src={verified} alt='verified' />
                     </div>
                     <p>@{suggestion.username}</p>
                   </div>
@@ -417,6 +416,46 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+      <div className='footer-container'>
+          <ul>
+            <li
+              className={activeLink === 'Home' ? 'active' : ''}
+              onClick={() => handleLinkClick('Home')}
+            >
+              <CiHome color={activeLink === 'Home' ? 'gold' : 'darkgray'} />
+            </li>
+            <Link className='link' to='/messages'><li
+              className={activeLink === 'Messages' ? 'active' : ''}
+              onClick={() => handleLinkClick('Messages')}
+            >
+              <PiMessengerLogoThin color={activeLink === 'Messages' ? 'gold' : 'darkgray'} />
+            </li></Link>
+            <li
+              className={activeLink === 'Go Live' ? 'active' : ''}
+              onClick={() => handleLinkClick('Go Live')}
+            >
+              <CgLivePhoto color={activeLink === 'Go Live' ? 'gold' : 'darkgray'} />
+            </li>
+            <Link className='link' to='/notifications'><li
+              className={activeLink === 'Notifications' ? 'active' : ''}
+              onClick={() => handleLinkClick('Notifications')}
+            >
+              <IoMdNotificationsOutline color={activeLink === 'Notifications' ? 'gold' : 'darkgray'} />
+            </li></Link>
+            <Link className="link" to='/profile'><li
+              className={activeLink === 'Profile' ? 'active' : ''}
+              onClick={() => handleLinkClick('Profile')}
+            >
+              <CiUser color={activeLink === 'Profile' ? 'gold' : 'darkgray'} /> 
+            </li></Link>
+            <Link className="link" to='/settings'><li
+              className={activeLink === 'Settings' ? 'active' : ''}
+              onClick={() => handleLinkClick('Settings')}
+            >
+              <CiSettings color={activeLink === 'Settings' ? 'gold' : 'darkgray'} />
+            </li></Link>
+          </ul>
+        </div>
     </div >
   )
 }

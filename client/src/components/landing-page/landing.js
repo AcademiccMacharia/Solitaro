@@ -28,7 +28,7 @@ const LandingPage = () => {
                     <h1>Let's Connect!</h1> 
                     <h1>Let's Flourish!</h1>
                     <p>Join the Vibrant Solitaro Community.</p>
-                    <button class="custom-btn btn-12"><span>Click Me!</span><span>Sign Up!</span></button>
+                    <Link to='/signup'><button class="custom-btn btn-12"><span>Click Me!</span><span>Sign Up!</span></button></Link>
                 </div>
                 <div className='landing-page-content-image'>
                     <img src="https://assets.codepen.io/2621168/svgtest.svg" alt="Phone illustration" />

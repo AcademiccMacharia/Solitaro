@@ -79,43 +79,43 @@ module.exports = {
     }
   },
   getFollowedPosts: async (req, res) => {
-  const userId = req.session?.member_id;
-  const { pool } = req;
+    try {
+      const pool = req.pool;
+      const userId = req.session?.member_id;
 
-  try {
-    const request = await pool
-      .request()
-      .input('userId', userId)
-      .execute('social.GetFollowedUsersPostData');
+      const request = await pool.request()
+                      .input('userId', userId)
+                      .execute('social.GetFollowedUsersPostsData');
 
-    const posts = request.recordset;
-    
-    console.log(posts);
-
-    if (posts.length === 0) {
-      return res.status(404).json({ success: false, message: 'No posts found' });
-    } else {
-      const formattedPosts = posts.map(post => {
+      console.log(request);
+      const followedPosts = request.recordset;
+      const formattedPosts = followedPosts.map((post) => {
+        const comments = post.comments ? JSON.parse(post.comments) : [];
         return {
           post_id: post.post_id,
           user_id: post.user_id,
+          full_name: post.full_name,
+          username: post.username,
+          dp_url: post.dp_url,
           post_content: post.post_content,
           post_image_url: post.post_image_url,
           post_video_url: post.post_video_url,
           post_created_at: post.post_created_at,
           post_likes_count: post.post_likes_count,
           total_comments_count: post.total_comments_count,
-          comments: JSON.parse(post.comments),
+          comments,
         };
       });
-
-      return res.json({ success: true, data: formattedPosts });
+  
+      res.json({
+        success: true,
+        data: formattedPosts,
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
     }
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
-  }
-},
+  },
   changePassword: async (req, res) => {
     const { userId, currentPassword, newPassword } = req.body;
 
