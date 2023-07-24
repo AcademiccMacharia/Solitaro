@@ -99,7 +99,7 @@ module.exports = {
 
     unfollowUser: async (req, res) => {
         const following_user_id = req.session?.member_id;
-        let { followed_user_id } = req.body
+        let { followed_user_id } = req.params
         try {
             const pool = req.pool;
             if (pool.connected) {

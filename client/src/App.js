@@ -9,7 +9,6 @@ import Profile from './components/profile/Profile';
 import Settings from './components/settings/Settings';
 import ProfilePosts from './components/profile/ProfilePosts';
 import ProfilePhotos from './components/profile/ProfilePhotos';
-import Logout from './components/settings/Logout';
 import EditProfile from './components/settings/EditProfile';
 import Account from './components/settings/Account';
 import Verification from './components/settings/Verification';
@@ -65,10 +64,6 @@ const router = createBrowserRouter([
           {
             path: '/settings',
             element: <Account />
-          },
-          {
-            path: '/settings/logout',
-            element: <Logout />
           },
           {
             path: '/settings/editprofile',
@@ -140,6 +135,10 @@ const router = createBrowserRouter([
           element: <Following />
         }
       ]
+      },
+      {
+        path: '/user/:userId',
+        element: <UserProfile />
       }
     ]
   },

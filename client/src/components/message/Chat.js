@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import './message.css'
+import Footer from "../Footer";
 function Chat({ socket, username, room }) {
     const [currentMessage, setCurrentMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
@@ -32,6 +33,7 @@ function Chat({ socket, username, room }) {
     }, [socket]);
 
     return (
+        <>
         <div className="chat-window">
             <div className="chat-header">
                 <p>Live Chat</p>
@@ -74,6 +76,8 @@ function Chat({ socket, username, room }) {
                 <button onClick={sendMessage}>&#9658;</button>
             </div>
         </div>
+        <Footer />
+        </>
     );
 }
 

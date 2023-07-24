@@ -14,6 +14,6 @@ followRoutes.get('/usersnotfollowed', getUsersNotFollowed);
 followRoutes.get('/followers', getFollowers);
 followRoutes.get('/following', getFollowing);
 followRoutes.post('/follow', followUser);
-followRoutes.delete('/unfollow', unfollowUser);
+followRoutes.delete('/unfollow/:followed_user_id', unfollowUser);
 
 module.exports=followRoutes;

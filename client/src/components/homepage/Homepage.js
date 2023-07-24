@@ -13,9 +13,9 @@ import placeholder from '../../assets/placeholder2.png'
 import { MdCancel } from 'react-icons/md';
 import { Link, Outlet } from 'react-router-dom';
 import { RiImageAddFill, RiVideoAddFill } from 'react-icons/ri'; 
-
 import axios from 'axios';
 import Foryou from './Foryou';
+import Footer from '../Footer';
 
 const Homepage = () => {
   const [activeLink, setActiveLink] = useState('Home');
@@ -397,7 +397,9 @@ const Homepage = () => {
               suggestions.map((suggestion) => (
                 <div className='following' key={suggestion.user_id}>
                   <div className='following-image'>
+                  <Link to={`/user/${suggestion.user_id}`} className='link'>
                     <img src={suggestion.dp_url ? suggestion.dp_url : placeholder} alt='man' />
+                  </Link>
                   </div>
                   <div className='following-info'>
                     <div className='verification'>
@@ -416,46 +418,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      <div className='footer-container'>
-          <ul>
-            <li
-              className={activeLink === 'Home' ? 'active' : ''}
-              onClick={() => handleLinkClick('Home')}
-            >
-              <CiHome color={activeLink === 'Home' ? 'gold' : 'darkgray'} />
-            </li>
-            <Link className='link' to='/messages'><li
-              className={activeLink === 'Messages' ? 'active' : ''}
-              onClick={() => handleLinkClick('Messages')}
-            >
-              <PiMessengerLogoThin color={activeLink === 'Messages' ? 'gold' : 'darkgray'} />
-            </li></Link>
-            <li
-              className={activeLink === 'Go Live' ? 'active' : ''}
-              onClick={() => handleLinkClick('Go Live')}
-            >
-              <CgLivePhoto color={activeLink === 'Go Live' ? 'gold' : 'darkgray'} />
-            </li>
-            <Link className='link' to='/notifications'><li
-              className={activeLink === 'Notifications' ? 'active' : ''}
-              onClick={() => handleLinkClick('Notifications')}
-            >
-              <IoMdNotificationsOutline color={activeLink === 'Notifications' ? 'gold' : 'darkgray'} />
-            </li></Link>
-            <Link className="link" to='/profile'><li
-              className={activeLink === 'Profile' ? 'active' : ''}
-              onClick={() => handleLinkClick('Profile')}
-            >
-              <CiUser color={activeLink === 'Profile' ? 'gold' : 'darkgray'} /> 
-            </li></Link>
-            <Link className="link" to='/settings'><li
-              className={activeLink === 'Settings' ? 'active' : ''}
-              onClick={() => handleLinkClick('Settings')}
-            >
-              <CiSettings color={activeLink === 'Settings' ? 'gold' : 'darkgray'} />
-            </li></Link>
-          </ul>
-        </div>
+      <Footer />
     </div >
   )
 }

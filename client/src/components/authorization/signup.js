@@ -5,7 +5,7 @@ import landingLogo from '../../assets/login-logo.png';
 import connect from '../../assets/connecting.svg';
 import interact from '../../assets/conversations.svg';
 import loving from '../../assets/selfie.png';
-import { FaArrowRight, FaGoogle} from 'react-icons/fa';
+import { FaGoogle} from 'react-icons/fa';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -252,7 +252,7 @@ const Signup = () => {
               </div>
               </div>
               <div className='input-group' id='submit-btn'>
-                <button type='submit'><FaArrowRight /></button>   
+                <button type='submit'>Sign Up</button>   
             </div>
           </form>
 

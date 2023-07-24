@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import './settings.css';
+import Footer from '../Footer';
 
 const Settings = () => {
     return (
@@ -23,16 +24,13 @@ const Settings = () => {
                     <p>Verify your account.</p>
                 </div>
                 <div className='setting'>
-                    <Link className='link' to='/settings/logout'><h3>Logout</h3></Link>
-                    <p>Logout of your account.</p>
-                </div>
-                <div className='setting'>
                 <Link className='link' to='/settings/deleteaccount'><h3>Delete Account</h3></Link>
                     <p>Delete your account.</p>
                 </div>
             </div>
             <Outlet />
             </div>
+            <Footer />
         </div>
     )
 }

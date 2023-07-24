@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import placeholder from '../../assets/placeholder2.png';
 import verified from '../../assets/verified.png';
+import { Link } from 'react-router-dom';
 
 const Followers = () => {
     const [followers, setFollowers] = useState(null);
@@ -34,7 +35,9 @@ const Followers = () => {
               followers.map((follower) => (
                 <div className='following' key={follower.user_id}>
                   <div className='following-image'>
+                  <Link to={`/user/${follower.user_id}`} className='link'>
                     <img src={follower.dp_url ? follower.dp_url : placeholder} alt='man' />
+                  </Link>
                   </div>
                   <div className='following-info'>
                     <div className='verification'>

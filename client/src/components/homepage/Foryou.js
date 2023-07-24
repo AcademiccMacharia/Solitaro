@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { GoComment } from 'react-icons/go';
-import { AiOutlineLike } from 'react-icons/ai';
+import { AiOutlineLike, AiFillDelete } from 'react-icons/ai';
 import { CiShare2 } from 'react-icons/ci';
 import axios from 'axios';
 import placeholder2 from '../../assets/placeholder2.png';
 import UserProfile from './UserProfile';
+import { Link } from 'react-router-dom';
 
 const Foryou = () => {
   const [posts, setPosts] = useState([]);
@@ -39,7 +40,7 @@ const Foryou = () => {
           },
         }
       );
-        console.log(response)
+      console.log(response)
       setLikedPosts((prevLikedPosts) => ({
         ...prevLikedPosts,
         [post_id]: !isPostLiked,
@@ -49,9 +50,9 @@ const Foryou = () => {
         prevPosts.map((post) =>
           post.post_id === post_id
             ? {
-                ...post,
-                post_likes_count: post.post_likes_count + (isPostLiked ? -1 : 1),
-              }
+              ...post,
+              post_likes_count: post.post_likes_count + (isPostLiked ? -1 : 1),
+            }
             : post
         )
       );
@@ -199,11 +200,12 @@ const Foryou = () => {
             <div>
               <div className='post-header'>
                 <div className='profile-image'>
-                  <img
-                    src={post.user_dp_url ? post.user_dp_url : placeholder2}
-                    alt='man'
-                    onClick={() => handleUserImageClick(post)}
-                  />
+                  <Link to={`/user/${post.user_id}`} className='link'>
+                    <img
+                      src={post.user_dp_url ? post.user_dp_url : placeholder2}
+                      alt='man'
+                    />
+                  </Link>
                 </div>
                 <div className='post-info'>
                   <div className='post-info-top'>
@@ -260,7 +262,10 @@ const Foryou = () => {
                         <img src={comment.CommentUserDpUrl ? comment.CommentUserDpUrl : placeholder2} alt='comment' />
                         <div className='comment-content'>
                           <h3>{comment.CommentUserFullName}</h3>
+                          <div className='com-del'>
                           <p>{comment.CommentContent}</p>
+                         <i><AiFillDelete /></i>
+                         </div> 
                           <h6 onClick={() => handleToggleCommentReplies(comment.CommentId)}>Replies</h6>
                         </div>
                       </div>
@@ -273,6 +278,7 @@ const Foryou = () => {
                                 <div className='reply-content'>
                                   <h3>{reply.ReplyUserFullName}</h3>
                                   <p>{reply.ReplyContent}</p>
+                                  
                                 </div>
                               </div>
                             ))}

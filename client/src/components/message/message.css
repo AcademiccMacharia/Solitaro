@@ -208,3 +208,9 @@
 .hide {
   opacity: 0 !important;
 }
+
+@media (max-width: 950px) {
+  .chatting{
+    height: 88vh;
+  }
+}

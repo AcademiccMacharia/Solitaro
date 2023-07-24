@@ -13,6 +13,7 @@ memberRoutes.post('/login',  memberController.loginMember);
 memberRoutes.post('/register', newUserMiddleware, memberController.registerMember);
 memberRoutes.get('/followingposts', memberController.getFollowedPosts);
 memberRoutes.get('/profile', memberController.getMemberProfile);
+memberRoutes.get('/profile/:userId', memberController.getMemberProfileById);
 memberRoutes.put('/updateprofile', memberController.editProfile);
 memberRoutes.delete('/deleteuser/:userId', memberController.deleteUser);
 memberRoutes.put('/updatepw', memberController.changePassword);

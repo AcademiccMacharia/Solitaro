@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Chat from "./Chat";
+import Footer from "../Footer";
 
 const socket = io.connect("http://localhost:3001");
 
@@ -34,6 +35,7 @@ function Message() {
   };
 
   return (
+    <>
     <div className="chatting">
       {!showChat ? (
         <div className="joinChatContainer">
@@ -51,6 +53,8 @@ function Message() {
         <Chat socket={socket} username={username} room={room} />
       )}
     </div>
+    <Footer />
+    </>
   );
 }
 

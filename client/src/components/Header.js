@@ -1,17 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { BiSearchAlt, BiMessageSquareDots } from 'react-icons/bi';
+import { BiSearchAlt } from 'react-icons/bi';
+import {TbLogout} from 'react-icons/tb';
+import { FaRunning } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import landingLogo from '../assets/homeLogo-dark.png';
 import './header.css';
 import { Outlet, Link } from 'react-router-dom';
 import placeholder2 from '../assets/placeholder2.png';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from "react-toastify";
 import DarkMode from './DarkMode';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [profile, setProfile] = useState(null);
+
+  const logoutUser = async () => {
+    try {
+      await axios.get("http://localhost:5000/logout", {
+        withCredentials: true,
+      });
+  
+      alert('Logout successful. Redirecting...');
+      setTimeout(() => {
+        navigate("/landing");
+      }, 1500);
+  
+    } catch (error) {
+      toast.error("Failed to logout");
+      console.error("Error logging out:", error);
+    }
+  };
 
   useEffect(() => {
     fetchProfile();
@@ -82,8 +104,11 @@ const Header = () => {
             </i>
           </div>
           <div className="nav-icon" id="message-icon">
-            <i>
-              <BiMessageSquareDots />
+            <i className='default-icon'>
+              <TbLogout onClick={logoutUser}/>
+            </i>
+            <i className='hover-icon'>
+              <FaRunning />
             </i>
           </div>
           <div className="nav-image">

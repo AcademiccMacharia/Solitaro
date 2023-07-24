@@ -6,6 +6,7 @@ import './profile.css';
 import { Link, Outlet } from 'react-router-dom';
 import placeholder2 from '../../assets/placeholder2.png';
 import axios from 'axios';
+import Footer from '../Footer';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -34,6 +35,7 @@ const Profile = () => {
   }
 
   return (
+    <>
     <div className='profile'>
       <div className='profile-body'>
         <div className='profile-body-top'>
@@ -82,6 +84,8 @@ const Profile = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   )
 }
 

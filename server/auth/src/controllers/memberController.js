@@ -182,6 +182,24 @@ module.exports = {
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
   },
+  getMemberProfileById: async (req, res) => {
+    const {userId} = req.params;
+    const { pool } = req;
+    try {
+      const request = await pool.request()
+        .input('userId', mssql.UniqueIdentifier, userId)
+        .execute('social.GetMemberProfile');
+      const member = request.recordset[0];
+      if (member) {
+        res.json({ success: true, data: member });
+      } else {
+        res.status(404).json({ success: false, message: 'User not found' });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+  },
   //get all member details
   getAUser: async (req, res) => {
     const userId = req.session?.member_id;
@@ -328,6 +346,7 @@ module.exports = {
   },
   logoutMember: async (req, res) => {
     console.log(req.session)
+
     req.session.destroy((err) => {
       if (err) {
         res.send("Error logging out");
@@ -335,6 +354,5 @@ module.exports = {
         res.send("Logged out successfully");
       }
     })
-
   }
 };

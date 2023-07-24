@@ -392,3 +392,46 @@
 .delete-acc-fields button:hover{
     cursor: pointer;
 }
+
+@media (max-width: 950px) {
+    .settings{
+        height: 92%;
+    }
+    .settings h1{
+        font-size: 20px;
+    }
+    .settings-header{
+        width: 95%;
+    }
+    .setting-body{
+        margin-left: 0px;
+        width: 95%;
+        display: flex;
+        align-self: center;
+    }
+    .account-form .account-fields input{
+        width: 100%;
+    }
+    .setting-body p{
+        display: none;
+    }
+    .setting{
+        justify-content: center;
+        border-bottom: 1px solid gray;
+    }
+    .account button{
+        width: 75%;
+    }
+    .verify-btn{
+        flex-direction: column;
+    }
+    .verify-btn button{
+        width: 100%;
+    }
+    .delete-acc-fields{
+        flex-direction: column;
+    }
+    .delete-acc-fields button{
+        width: 100%;
+    }
+}

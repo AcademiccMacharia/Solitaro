@@ -4,7 +4,7 @@ import landingLogo from '../../assets/login-logo.png';
 import connect from '../../assets/connecting.svg';
 import interact from '../../assets/conversations.svg';
 import loving from '../../assets/selfie.png';
-import { FaArrowRight, FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
+import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa';
 import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
@@ -175,7 +175,7 @@ const handleLogin = async (e) => {
             </div>
             <div className='form-group'>
               <button type='submit'>
-              <FaArrowRight />
+              Sign In
               </button>
             </div>
             <div className='form-group'>
