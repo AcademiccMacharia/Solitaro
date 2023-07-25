@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoComment } from 'react-icons/go';
-import { AiOutlineLike, AiFillDelete } from 'react-icons/ai';
+import { AiFillLike, AiFillDelete } from 'react-icons/ai';
 import { CiShare2 } from 'react-icons/ci';
 import axios from 'axios';
 import placeholder2 from '../../assets/placeholder2.png';
@@ -238,7 +238,7 @@ const Foryou = () => {
               </div>
               <div className='post-stats'>
                 <div className='post-stat'>
-                  <AiOutlineLike
+                  <AiFillLike
                     size={20}
                     onClick={() => handlePostLike(post.post_id)}
                     style={{ color: likedPosts[post.post_id] ? 'red' : 'inherit' }}

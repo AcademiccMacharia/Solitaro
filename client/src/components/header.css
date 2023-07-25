@@ -56,7 +56,9 @@
   .search-result{
     display: flex;
     align-items: center;
+    margin-left: 10px;
     margin-bottom: 10px;
+    width: 90%;
   }
   .result-content{
     display: flex;
