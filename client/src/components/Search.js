@@ -61,7 +61,7 @@ const Search = () => {
         <div ref={searchContainerRef} className="search-results">
           <ul className="search-results">
             {searchResults.map((result) => (
-              <li key={result.UserID} className="search-result">
+              <li key={result.user_iD} className="search-result">
                 <img src={result.dp_url ? result.dp_url : placeholder} alt="profile" />
                 <div className='result-content'>
                 <p>{result.full_name}</p>
