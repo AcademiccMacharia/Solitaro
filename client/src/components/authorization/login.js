@@ -9,6 +9,9 @@ import { RiEyeFill, RiEyeOffFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
 import axios from 'axios';
+// import {GoogleLogin} from 'react-google-login';
+
+// const clientId = "469270494956-vfjdhi9r86iqa51hc7sa97g28o70al1g.apps.googleusercontent.com";
 
 const Login = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BiSearchAlt } from 'react-icons/bi';
-import {TbLogout} from 'react-icons/tb';
+
+import { TbLogout } from 'react-icons/tb';
 import { FaRunning } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import landingLogo from '../assets/homeLogo-dark.png';
@@ -11,24 +11,25 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from "react-toastify";
 import DarkMode from './DarkMode';
+import Search from './Search';
 
 const Header = () => {
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState([]);
 
   const logoutUser = async () => {
     try {
       await axios.get("http://localhost:5000/logout", {
         withCredentials: true,
       });
-  
+
       alert('Logout successful. Redirecting...');
       setTimeout(() => {
         navigate("/landing");
       }, 1500);
-  
+
     } catch (error) {
       toast.error("Failed to logout");
       console.error("Error logging out:", error);
@@ -37,21 +38,6 @@ const Header = () => {
 
   useEffect(() => {
     fetchProfile();
-  }, []);
-
-
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/notification", {
-          withCredentials: true,
-        });
-        setNotifications(response.data.data);
-        console.log(response.data.data);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    }
     fetchNotifications();
   }, []);
 
@@ -60,19 +46,26 @@ const Header = () => {
   };
 
   const fetchProfile = async () => {
-    const response = await axios.get('http://localhost:5000/profile', { withCredentials: true });
-    console.log(response)
     try {
+      const response = await axios.get('http://localhost:5000/profile', { withCredentials: true });
       if (response.data.success) {
-        setProfile(response.data.data)
+        setProfile(response.data.data);
       }
     } catch (err) {
-      alert(err)
+      console.error("Error fetching profile:", err);
     }
   };
 
-  if (!profile) {
-    return <div>Loading...</div>;
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/notification", {
+        withCredentials: true,
+      });
+      setNotifications(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
   }
 
   return (
@@ -90,12 +83,7 @@ const Header = () => {
         </div>
         <div className="navbar-center">
           <h3>Explore</h3>
-          <div className="search-bar">
-            <input type="text" placeholder="Find friends, communities here..." />
-            <i className="search-icon">
-              <BiSearchAlt />
-            </i>
-          </div>
+          <Search />
         </div>
         <div className="navbar-right">
           <div className="nav-icon" onClick={toggleNotifications}>
@@ -143,6 +131,3 @@ const Header = () => {
 };
 
 export default Header;
-
-
-

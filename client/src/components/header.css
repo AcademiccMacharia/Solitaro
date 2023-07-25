@@ -34,6 +34,35 @@
   .navbar-center h3 {
     font-size: 20px;
   }
+  .search-bar{
+    position: relative;
+  }
+  .search-results{
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 300px;
+    background-color: var(--container);
+    color: var(--text);
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 99999;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .search-result{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .result-content{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+  }
   .navbar-center .search-bar input {
     width: 300px;
     height: 30px;
@@ -83,7 +112,7 @@
     pointer-events: none;
     transition: opacity 0.3s ease-in-out;
   }
-  .nav-image img {
+  .nav-image img, .search-result img {
     width: 40px;
     height: 40px;
     font-size: 20px;

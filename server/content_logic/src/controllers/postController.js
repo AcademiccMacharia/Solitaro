@@ -196,6 +196,26 @@ module.exports = {
             res.status(500).json({ error: error.message });
         }
     },
+    searchByUsername: async (req, res) => {
+        const username = req.params.term;
+        const { pool } = req;
+      
+        try {
+          if (pool.connected) {
+            const request = pool.request();
+            request.input('username', username);
+            const result = await request.execute('SearchUsersByUsername');
+            res.json({
+              success: true,
+              message: "Searched users successfully",
+              data: result.recordset
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: error.message });
+        }
+      },
     deletePost: async (req, res) => {
         try {
             const pool = req.pool;

@@ -541,6 +541,9 @@
   background-color: var(--container);
   color: var(--text);
 }
+.footer-container{
+  display: none;
+}
 .following-container {
   grid-row: 1/4;
   grid-column: 3/4;
