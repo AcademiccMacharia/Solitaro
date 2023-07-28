@@ -72,10 +72,6 @@ const EditProfile = () => {
             </div>
             <div className='edit-body'>
                 <div className='edit-field'>
-                    <h3>Username</h3>
-                    <input type='text' id='name' placeholder='Username' />
-                </div>
-                <div className='edit-field'>
                     <div className='edit-field-text'>
                         <h3>Your Photo</h3>
                         <p>Upload a photo of yourself.</p>

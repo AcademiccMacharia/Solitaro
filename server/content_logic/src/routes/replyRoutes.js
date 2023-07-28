@@ -9,6 +9,6 @@ replyRoutes.use(sessionAuthorization);
 replyRoutes.get('/reply', getCommentReplies);
 replyRoutes.post('/reply', createReply);
 replyRoutes.get('/reply/:id', getCommentReplyById);
-replyRoutes.delete('/reply/:id', deleteCommentReply);
+replyRoutes.delete('/reply/:reply_id', deleteCommentReply);
 
 module.exports = replyRoutes;

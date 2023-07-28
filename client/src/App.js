@@ -25,6 +25,7 @@ import ProfileVideo from './components/profile/ProfileVideo';
 import Relationships from './components/profile/Relationships';
 import Followers from './components/profile/Followers';
 import Following from './components/profile/Following';
+import UserPosts from './components/homepage/UserPosts';
 
 
 const router = createBrowserRouter([
@@ -53,7 +54,7 @@ const router = createBrowserRouter([
         },
         {
           path: '/home',
-          element: <Foryou />
+          element: <Foryou />,
         }
         ]
       },
@@ -138,7 +139,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/user/:userId',
-        element: <UserProfile />
+        element: <UserProfile />,
+        children: [{
+          path: '/user/:userId',
+          element: <UserPosts />
+        }]
       }
     ]
   },

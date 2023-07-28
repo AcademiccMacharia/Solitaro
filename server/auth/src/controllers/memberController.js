@@ -117,26 +117,45 @@ module.exports = {
     }
   },
   changePassword: async (req, res) => {
-    const { userId, currentPassword, newPassword } = req.body;
-
     try {
-      const sql = await mssql.connect(config);
-      const request = sql.request();
-      request.input('userId', mssql.UniqueIdentifier, userId);
-      request.input('currentPassword', mssql.NVarChar(100), currentPassword);
-      request.input('newPassword', mssql.NVarChar(100), newPassword);
-
-      const result = await request.query('EXEC social.ChangePassword @userId, @currentPassword, @newPassword');
-      const success = result.recordset[0].Success;
-
-      if (success) {
-        res.json({ success: true, message: 'Password changed successfully' });
-      } else {
-        res.status(401).json({ success: false, message: 'Invalid current password' });
+      const { pool } = req;
+      const { currentPassword, newPassword } = req.body;
+      const userId = req.session?.member_id;
+  
+      if (!currentPassword) {
+        return res.status(400).json({
+          success: false,
+          message: 'Current password is required.',
+        });
+      }
+  
+      if (pool.connected) {
+        let passwords_match = await bcrypt.compare(
+          currentPassword,
+          req.session?.member.Password
+        );
+        let newPassword_hashed = await bcrypt.hash(newPassword, 8);
+        if (passwords_match) {
+          const result = await pool.request()
+            .input('userId', userId)
+            .input('NewPassword', newPassword_hashed)
+            .execute('ChangePassword');
+          console.log(result);
+  
+          if (result.rowsAffected[0] > 0) {
+            res.json({
+              success: true,
+              message: 'Successfully changed your password',
+            });
+          } else {
+            res.status(500).send('Failed to change password');
+          }
+        } else {
+          res.status(401).send('Wrong password');
+        }
       }
     } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Internal server error' });
+      res.send(error.message);
     }
   },
   editProfile: async (req, res) => {

@@ -80,11 +80,12 @@ module.exports = {
         }
     },
     deleteCommentReply: async (req, res) => {
+        const {reply_id} = req.params;
         try {
             const pool = req.pool;
             if (pool.connected) {
                 let results = await pool.request()
-                    .input("id", req.params.id)
+                    .input("reply_id", reply_id)
                     .execute('social.DeleteCommentReply');
                 console.log(results);
                 res.json({

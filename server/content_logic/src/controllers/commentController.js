@@ -111,7 +111,7 @@ module.exports = {
           throw error;
         }
       },
-    deleteComment: async (req, res) => {
+      deleteComment: async (req, res) => {
         try {
             const { comment_id } = req.params;
             const pool = req.pool;
@@ -119,7 +119,8 @@ module.exports = {
                 const request = pool.request();
                 request.input("comment_id", comment_id);
                 const result = await request.execute('social.DeleteComment');
-    
+                
+                console.log(result)
                 if (result.recordset[0].Deleted === 1) {
                     res.json({
                         success: true,
@@ -144,6 +145,6 @@ module.exports = {
                 error: error.message
             });
         }
-    }
+    }    
     
 }

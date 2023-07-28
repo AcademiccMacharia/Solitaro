@@ -434,4 +434,11 @@
     .delete-acc-fields button{
         width: 100%;
     }
+    .edit-field{
+        display: flex;
+        flex-direction: column;
+    }
+    .bio-field{
+        flex-direction: column;
+    }
 }

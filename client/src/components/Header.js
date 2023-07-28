@@ -28,7 +28,7 @@ const Header = () => {
       alert('Logout successful. Redirecting...');
       setTimeout(() => {
         navigate("/landing");
-      }, 1500);
+      }, 500);
 
     } catch (error) {
       toast.error("Failed to logout");

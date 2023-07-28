@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './homepage.css';
 import { IoMdNotificationsOutline } from 'react-icons/io';
-import { CiHome, CiUser, CiSettings } from 'react-icons/ci';
-import { CgLivePhoto } from 'react-icons/cg';
+import { CiUser, CiSettings } from 'react-icons/ci';
+import { AiFillHome } from 'react-icons/ai';
 import { PiMessengerLogoThin } from 'react-icons/pi';
 import verified from '../../assets/verified.png';
 import man1 from '../../assets/man1.jpg';
@@ -12,13 +12,14 @@ import woman4 from '../../assets/woman3.jpg';
 import placeholder from '../../assets/placeholder2.png'
 import { MdCancel } from 'react-icons/md';
 import { Link, Outlet } from 'react-router-dom';
-import { RiImageAddFill, RiVideoAddFill } from 'react-icons/ri'; 
+import { RiImageAddFill, RiVideoAddFill } from 'react-icons/ri';
 import axios from 'axios';
 import Foryou from './Foryou';
 import Footer from '../Footer';
 
 const Homepage = () => {
   const [activeLink, setActiveLink] = useState('Home');
+  const [activoLink, setActivoLink] = useState('For You');
   const [profile, setProfile] = useState(null);
   const [suggestions, setSuggestions] = useState(null);
   const [content, setContent] = useState('');
@@ -26,9 +27,14 @@ const Homepage = () => {
   const [videoPreview, setVideoPreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [videoFile, setVideoFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
+  };
+
+  const handleActivoClick = (link) => {
+    setActivoLink(link);
   };
 
   const handleContentChange = (event) => {
@@ -135,8 +141,18 @@ const Homepage = () => {
   };
 
   const createPost = async () => {
-    const imageUrl = await uploadMedia(imageFile);
-    const videoUrl = await uploadMedia(videoFile);
+    setIsLoading(true);
+
+    let imageUrl = null;
+    let videoUrl = null;
+
+    if (imageFile) {
+      imageUrl = await uploadMedia(imageFile);
+    }
+
+    if (videoFile) {
+      videoUrl = await uploadMedia(videoFile);
+    }
 
     const data = {
       content: content,
@@ -163,25 +179,14 @@ const Homepage = () => {
       alert('Error creating post. Please try again.');
       console.error(err);
     }
+    setIsLoading(false);
   };
 
-  const uploadImage = async () => {
-    const imageUrl = await uploadMedia(imageFile);
-    if (imageUrl) {
-      alert('Image uploaded successfully!');
-    }
-  };
-
-  const uploadVideo = async () => {
-    const videoUrl = await uploadMedia(videoFile);
-    if (videoUrl) {
-      alert('Video uploaded successfully!');
-    }
-  };
 
   useEffect(() => {
     fetchProfile();
     fetchUsersNotFollowed();
+    document.title='Solitaro'
   }, []);
 
   if (!profile) {
@@ -225,7 +230,7 @@ const Homepage = () => {
               className={activeLink === 'Home' ? 'active' : ''}
               onClick={() => handleLinkClick('Home')}
             >
-              <CiHome size={20} color={activeLink === 'Home' ? 'gold' : 'black'} /> <span>Home</span>
+              <AiFillHome size={20} color={activeLink === 'Home' ? 'gold' : 'black'} /> <span>Home</span>
             </li>
             <Link className='link' to='/messages'><li
               className={activeLink === 'Messages' ? 'active' : ''}
@@ -233,12 +238,6 @@ const Homepage = () => {
             >
               <PiMessengerLogoThin size={20} color={activeLink === 'Messages' ? 'gold' : 'black'} /> <span>Live Chat</span>
             </li></Link>
-            <li
-              className={activeLink === 'Go Live' ? 'active' : ''}
-              onClick={() => handleLinkClick('Go Live')}
-            >
-              <CgLivePhoto size={20} color={activeLink === 'Go Live' ? 'gold' : 'black'} /> <span>Go Live</span>
-            </li>
             <Link className='link' to='/notifications'><li
               className={activeLink === 'Notifications' ? 'active' : ''}
               onClick={() => handleLinkClick('Notifications')}
@@ -327,10 +326,16 @@ const Homepage = () => {
                   type='text'
                   onChange={handleContentChange}
                   value={content}
-                  placeholder='What is on your mind?'
+                  placeholder='Snap, post, repeat! Ignite some convos...'
                 />
               </div>
-              <button className='social-btn' id="posting-btn" onClick={createPost}>Post It!</button>
+              <button className={`up-btn ${isLoading ? 'loading' : ''}`} id="posting-btn" onClick={createPost}>
+                {isLoading ? (
+                  <div className="spinner"></div>
+                ) : (
+                  <span>Post It!</span>
+                )}
+              </button>
             </div>
             <div className='media-preview'>
               {imagePreview && <img src={imagePreview} alt='preview' />
@@ -349,37 +354,37 @@ const Homepage = () => {
               }
             </div>
             <div className='upload-buttons'>
-              <label htmlFor='imageInput'>
-                <button onClick={uploadImage}>Upload Photo</button>
-              </label>
-              <label htmlFor='imageInput' className='file-input-label'>
-                <RiImageAddFill className='label-icon' size={24} />
-              </label>
-              <input type='file' id='imageInput' accept='image/*' onChange={(event) => handleFileChange(event, 'image')} style={{ display: 'none' }} />
-              <label htmlFor='videoInput'>
-                <button onClick={uploadVideo}>Upload Video</button>
-              </label>
-              <label htmlFor='videoInput' className='file-input-label'>
-                <RiVideoAddFill className='label-icon' size={24} />
-              </label>
-              <input type='file' id='videoInput' accept='video/*' onChange={(event) => handleFileChange(event, 'video')} style={{ display: 'none' }} />
+              <div className='upload-icons'>
+                <p>Add Image</p>
+                <label htmlFor='imageInput' className='file-input-label'>
+                  <RiImageAddFill className='label-icon' size={20} />
+                </label>
+              </div>
+              <div className='upload-icons'>
+                <input type='file' id='imageInput' accept='image/*' onChange={(event) => handleFileChange(event, 'image')} style={{ display: 'none' }} />
+                <p>Add Video</p>
+                <label htmlFor='videoInput' className='file-input-label'>
+                  <RiVideoAddFill className='label-icon' size={20} />
+                </label>
+                <input type='file' id='videoInput' accept='video/*' onChange={(event) => handleFileChange(event, 'video')} style={{ display: 'none' }} />
+              </div>
             </div>
           </div>
           <div className='post-view'>
             <h3>
               <Link
-                className={`link ${activeLink === 'Feeds' ? 'active' : ''}`}
+                className={`link ${activoLink === 'Feeds' ? 'active' : ''}`}
                 to='/home/feed'
-                onClick={() => handleLinkClick('Feeds')}
+                onClick={() => handleActivoClick('Feeds')}
               >
                 Feeds
               </Link>
             </h3>
             <h3>
               <Link
-                className={`link ${activeLink === 'For You' ? 'active' : ''}`}
+                className={`link ${activoLink === 'For You' ? 'active' : ''}`}
                 to='/home'
-                onClick={() => handleLinkClick('For You')}
+                onClick={() => handleActivoClick('For You')}
               >
                 For You
               </Link>
@@ -397,9 +402,9 @@ const Homepage = () => {
               suggestions.map((suggestion) => (
                 <div className='following' key={suggestion.user_id}>
                   <div className='following-image'>
-                  <Link to={`/user/${suggestion.user_id}`} className='link'>
-                    <img src={suggestion.dp_url ? suggestion.dp_url : placeholder} alt='man' />
-                  </Link>
+                    <Link to={`/user/${suggestion.user_id}`} className='link'>
+                      <img src={suggestion.dp_url ? suggestion.dp_url : placeholder} alt='man' />
+                    </Link>
                   </div>
                   <div className='following-info'>
                     <div className='verification'>

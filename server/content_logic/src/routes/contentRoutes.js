@@ -7,7 +7,7 @@ const {sessionAuthorization} = require("../middlewares/sessionAuthorization");
 routes.use(sessionAuthorization);
 
 routes.get('/posts', getPosts);
-routes.get('/userposts', getUserPosts);
+routes.get('/userposts/:user_id', getUserPosts);
 routes.get('/posts/:id', getPostById);
 routes.get('/postdetails/:postId', getPostDetails);
 routes.get('/search/:term', searchByUsername);

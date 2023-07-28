@@ -74,7 +74,7 @@ module.exports = {
     getUserPosts: async (req, res) => {
         try {
             const pool = req.pool;
-            const user_id = req.session?.member_id
+            const {user_id} = req.params;
 
             if (pool.connected) {
                 const request = pool.request()

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CgLivePhoto } from 'react-icons/cg';
+import {FaSearch} from 'react-icons/fa';
 import {AiFillHome, AiFillMessage, AiFillSetting} from 'react-icons/ai';
 import { BiSolidUser } from 'react-icons/bi';
 import { MdNotifications } from 'react-icons/md';
@@ -29,6 +29,12 @@ const Footer = () => {
                     onClick={() => handleLinkClick('Messages')}
                 >
                     <AiFillMessage color={activeLink === 'Messages' ? 'gold' : 'gray'} />
+                </li></Link>
+                <Link className='link' to='/search'><li
+                    className={activeLink === 'Search' ? 'active' : ''}
+                    onClick={() => handleLinkClick('Search')}
+                >
+                    <FaSearch color={activeLink === 'Search' ? 'gold' : 'gray'} />
                 </li></Link>
                 <Link className='link' to='/notifications'><li
                     className={activeLink === 'Notifications' ? 'active' : ''}

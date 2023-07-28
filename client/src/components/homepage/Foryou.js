@@ -16,6 +16,23 @@ const Foryou = () => {
   const [postReplyInputs, setPostReplyInputs] = useState({});
   const [showCommentReplies, setShowCommentReplies] = useState({});
   const [likedPosts, setLikedPosts] = useState({});
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
+
+  const fetchLoggedInUser = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/profile', { withCredentials: true });
+      console.log(response)
+      if (response.data.success) {
+        setLoggedInUserId(response.data.data.id);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLoggedInUser();
+  }, []);
 
   const handleUserImageClick = (user) => {
     setSelectedUser(user);
@@ -72,7 +89,6 @@ const Foryou = () => {
         const response = await axios.get(`http://localhost:5051/postdetails/${post_id}`, {
           withCredentials: true,
         });
-
         if (response.data.success) {
           setPostComments((prevComments) => ({
             ...prevComments,
@@ -134,6 +150,12 @@ const Foryou = () => {
           },
         }
       );
+
+      setPostCommentInputs((prevInputs) => ({
+        ...prevInputs,
+        [post_id]: '',
+      }));
+
       handlePostClick(post_id);
       fetchPosts();
     } catch (error) {
@@ -147,6 +169,14 @@ const Foryou = () => {
       [comment_id]: e.target.value,
     }));
   };
+
+  const handleToggleCommentReplies = (commentId) => {
+    setShowCommentReplies((prevReplies) => ({
+      ...prevReplies,
+      [commentId]: !prevReplies[commentId],
+    }));
+  };
+
 
   const handleReplySubmit = async (comment_id) => {
     const replyText = postReplyInputs[comment_id];
@@ -167,22 +197,79 @@ const Foryou = () => {
         }
       );
 
-      fetchPosts();
+      setPostReplyInputs((prevInputs) => ({
+        ...prevInputs,
+        [comment_id]: '',
+      }));
+
+     handleToggleCommentReplies(comment_id);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  const handleToggleCommentReplies = (commentId) => {
-    setShowCommentReplies((prevReplies) => ({
-      ...prevReplies,
-      [commentId]: !prevReplies[commentId],
-    }));
-  };
 
+ 
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  const deletePost = async (post_id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5051/posts/${post_id}`, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handlePostDelete = async (post_id) => {
+    await deletePost(post_id);
+    await fetchPosts();
+  };
+
+  const deleteComment = async (comment_id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5051/comments/${comment_id}`, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleCommentDelete = async (comment_id) => {
+    await deleteComment(comment_id);
+    await fetchPosts();
+  };
+
+  const deleteReply = async (reply_id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5051/reply/${reply_id}`, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleReplyDelete = async (reply_id) => {
+    await deleteReply(reply_id);
+    await fetchPosts();
+  };
 
   if (!posts) {
     return <div>Loading...</div>;
@@ -209,8 +296,15 @@ const Foryou = () => {
                 </div>
                 <div className='post-info'>
                   <div className='post-info-top'>
+                    <div className='post-info-text'>
                     <h3>{post.user_full_name}</h3>
                     <p>@{post.user_username}</p>
+                    </div>
+                    <div className='com-del'>
+                      {post.user_id === loggedInUserId && (
+                        <i onClick={() => handlePostDelete(post.post_id)}><AiFillDelete /></i>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -241,7 +335,7 @@ const Foryou = () => {
                   <AiFillLike
                     size={20}
                     onClick={() => handlePostLike(post.post_id)}
-                    style={{ color: likedPosts[post.post_id] ? 'red' : 'inherit' }}
+                    style={{ color: likedPosts[post.post_id] ? 'red' : 'lightgray' }}
                   />
                   <p>{post.post_likes_count}</p>
                 </div>
@@ -263,9 +357,13 @@ const Foryou = () => {
                         <div className='comment-content'>
                           <h3>{comment.CommentUserFullName}</h3>
                           <div className='com-del'>
-                          <p>{comment.CommentContent}</p>
-                         <i><AiFillDelete /></i>
-                         </div> 
+                            <p>{comment.CommentContent}</p>
+                            {comment.CommentUserId === loggedInUserId && (
+                              <i onClick={() => handleCommentDelete(comment.CommentId)}>
+                                <AiFillDelete />
+                              </i>
+                            )}
+                          </div>
                           <h6 onClick={() => handleToggleCommentReplies(comment.CommentId)}>Replies</h6>
                         </div>
                       </div>
@@ -277,8 +375,12 @@ const Foryou = () => {
                                 <img src={reply.ReplyUserDpUrl ? reply.ReplyUserDpUrl : placeholder2} alt='reply' />
                                 <div className='reply-content'>
                                   <h3>{reply.ReplyUserFullName}</h3>
-                                  <p>{reply.ReplyContent}</p>
-                                  
+                                  <div className='com-del'>
+                                    <p>{reply.ReplyContent}</p>
+                                    {reply.ReplyUserId === loggedInUserId && (
+                                      <i onClick={() => handleReplyDelete(reply.ReplyId)}><AiFillDelete /></i>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             ))}
