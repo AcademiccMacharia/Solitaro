@@ -43,11 +43,9 @@ Landing Page
 
 ![Landing](./client/src/assets/landing-page.png)
 
-Login / Register Pages
+Login page
 
 ![Login](./client/src/assets/signup-page.png)
-
-![Register](./client/src/assets/Login-page.png)
 
 Home Page(Light mode)
 
